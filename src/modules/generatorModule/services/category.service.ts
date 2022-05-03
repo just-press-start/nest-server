@@ -12,16 +12,9 @@ export class CategoryService {
   ) {}
 
   async findAll(topicId): Promise<Category[]> {
-    // const categories = await this.topicModel
-    //   .aggregate<Category>([
-    //     {
-    //       $unwind: '$categories',
-    //     },
-    //   ])
-    //   .exec();
-    const topics: Topic[] = await this.topicModel.find({ _id: topicId }).exec();
-    if (topics.length > 0) {
-      const categories: Category[] = topics[0].categories;
+    const topic: Topic = await this.topicModel.findOne({ _id: topicId }).exec();
+    if (topic) {
+      const categories: Category[] = topic.categories;
       return categories;
     } else {
       return <Category[]>[];
@@ -41,25 +34,32 @@ export class CategoryService {
 
   async update(topicId, categoryId, newCategory: Category): Promise<Topic> {
     await this.topicModel.updateOne(
-      { _id: topicId, 'categories._id': categoryId },
-      { $set: { 'categories.$': newCategory } },
+      { _id: topicId },
+      { $set: { 'categories.$[i]': newCategory } },
+      {
+        arrayFilters: [
+          {
+            'i._id': categoryId,
+          },
+        ],
+      },
     );
     return await this.topicModel.findOne({ _id: topicId });
   }
 
   async delete(topicId, categoryId): Promise<Topic> {
     await this.topicModel.updateOne<Topic>(
-      { _id: topicId, 'categories._id': categoryId },
+      { _id: topicId },
       { $pull: { categories: { _id: categoryId } } },
     );
     return await this.topicModel.findOne({ _id: topicId });
   }
 
   async getGategory(topicId, categoryId): Promise<Category> {
-    const topics: Topic[] = await this.topicModel.find({ _id: topicId }).exec();
-    if (topics.length > 0) {
+    const topic: Topic = await this.topicModel.findOne({ _id: topicId }).exec();
+    if (topic) {
       let foundedCategory = null;
-      for (const category of topics[0].categories) {
+      for (const category of topic.categories) {
         if (category._id == categoryId) {
           foundedCategory = category;
           break;

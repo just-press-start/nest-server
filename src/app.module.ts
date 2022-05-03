@@ -18,10 +18,7 @@ import { GeneratorModule } from './modules/generatorModule/generator.module';
   imports: [
     GeneratorModule,
     MongooseModule.forRoot('mongodb://localhost/100-things'),
-    MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-      { name: Category.name, schema: CategorySchema },
-    ]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [UserController],
   providers: [UserService],

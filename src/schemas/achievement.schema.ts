@@ -1,10 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type AchievementDocument = Achievement & Document;
-
 @Schema()
-export class Achievement {
+export class Achievement extends Document {
   @Prop()
   name: string;
 

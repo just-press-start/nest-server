@@ -19,7 +19,7 @@ export class ActivityController {
   constructor(private readonly activityService: ActivityService) {}
 
   @Post()
-  async createCategory(
+  async createActivity(
     @Res() response,
     @Body() activityDto: Activity,
     @Param('topicId') topicId,
@@ -35,25 +35,66 @@ export class ActivityController {
     });
   }
 
+  @Get('/:activityId')
+  async getCategory(
+    @Res() response,
+    @Param('topicId') topicId,
+    @Param('categoryId') categoryId,
+    @Param('activityId') activityId,
+  ) {
+    const category = await this.activityService.getActivity(
+      topicId,
+      categoryId,
+      activityId,
+    );
+    return response.status(HttpStatus.OK).json({
+      category,
+    });
+  }
+
   @Get()
-  async findAll(@Res() response) {
-    const activities = await this.activityService.findAll();
+  async findAll(
+    @Res() response,
+    @Param('topicId') topicId,
+    @Param('categoryId') categoryId,
+  ) {
+    const activities = await this.activityService.findAll(topicId, categoryId);
     return response.status(HttpStatus.OK).json({
       activities,
     });
   }
 
-  @Put('/:id')
-  async update(@Res() response, @Param('id') id, @Body() activity: Activity) {
-    const updatedActivity = await this.activityService.update(id, activity);
+  @Put('/:activityId')
+  async update(
+    @Res() response,
+    @Param('topicId') topicId,
+    @Param('categoryId') categoryId,
+    @Param('activityId') activityId,
+    @Body() activity: Activity,
+  ) {
+    const updatedActivity = await this.activityService.update(
+      topicId,
+      categoryId,
+      activityId,
+      activity,
+    );
     return response.status(HttpStatus.OK).json({
       updatedActivity,
     });
   }
 
-  @Delete('/:id')
-  async delete(@Res() response, @Param('id') id) {
-    const deletedActivity = await this.activityService.delete(id);
+  @Delete('/:activityId')
+  async delete(
+    @Res() response,
+    @Param('topicId') topicId,
+    @Param('categoryId') categoryId,
+    @Param('activityId') activityId,
+  ) {
+    const deletedActivity = await this.activityService.delete(
+      topicId,
+      categoryId,
+      activityId,
+    );
     return response.status(HttpStatus.OK).json({
       deletedActivity,
     });

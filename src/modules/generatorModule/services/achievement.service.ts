@@ -4,43 +4,35 @@ import { Model } from 'mongoose';
 import { Activity } from '../../../schemas/activity.schema';
 import { Topic } from '../../../schemas/topic.schema';
 import { Category } from '../../../schemas/category.schema';
+import { Achievement } from '../../../schemas/achievement.schema';
 
 @Injectable()
-export class ActivityService {
+export class AchievementService {
   constructor(
     @InjectModel(Topic.name)
     private topicModel: Model<Topic>,
   ) {}
 
-  async findAll(topicId, categoryId): Promise<Activity[]> {
-    const topic: Topic = await this.topicModel.findOne({ _id: topicId }).exec();
-    if (topic) {
-      const categories: Category[] = topic.categories;
-      const filteredCategories = categories.filter(
-        (category) => category.id == categoryId,
-      );
-      if (filteredCategories) {
-        return filteredCategories[0].activities;
-      } else {
-        return <Activity[]>[];
-      }
-    } else {
-      return <Activity[]>[];
-    }
-  }
-
-  async addActivityToCategory(
+  async addAchievementToActivity(
     topicId: number,
     categoryId: number,
-    activityDto: Activity,
+    activityId: number,
+    achievementDto: Achievement,
   ): Promise<Topic> {
     return this.topicModel.findOneAndUpdate(
       { _id: topicId },
-      { $push: { 'categories.$[i].activities': activityDto } },
+      {
+        $set: {
+          'categories.$[i].activities.$[j].achievement': achievementDto,
+        },
+      },
       {
         arrayFilters: [
           {
             'i._id': categoryId,
+          },
+          {
+            'j._id': activityId,
           },
         ],
         new: true,
@@ -48,7 +40,7 @@ export class ActivityService {
     );
   }
 
-  async getActivity(topicId, categoryId, activityId): Promise<Activity> {
+  async getAchievement(topicId, categoryId, activityId): Promise<Achievement> {
     const topic: Topic = await this.topicModel.findOne({ _id: topicId }).exec();
     if (topic) {
       let foundedCategory: Category = null;
@@ -66,7 +58,11 @@ export class ActivityService {
             break;
           }
         }
-        return foundedActivity;
+        if (foundedActivity) {
+          console.log(foundedActivity);
+          return foundedActivity.achievement;
+        }
+        return null;
       }
     } else {
       return null;
@@ -77,13 +73,15 @@ export class ActivityService {
     topicId,
     categoryId,
     activityId,
-    newActivity: Activity,
+    newAchievement: Achievement,
   ): Promise<Topic> {
     await this.topicModel.updateOne(
       {
         _id: topicId,
       },
-      { $set: { 'categories.$[i].activities.$[j]': newActivity } },
+      {
+        $set: { 'categories.$[i].activities.$[j].achievement': newAchievement },
+      },
       {
         arrayFilters: [
           {
@@ -100,11 +98,14 @@ export class ActivityService {
   async delete(topicId, categoryId, activityId): Promise<Topic> {
     await this.topicModel.updateOne<Topic>(
       { _id: topicId },
-      { $pull: { 'categories.$[i].activities': { _id: activityId } } },
+      { $unset: { 'categories.$[i].activities.$[j].achievement': '' } },
       {
         arrayFilters: [
           {
             'i._id': categoryId,
+          },
+          {
+            'j._id': activityId,
           },
         ],
       },
