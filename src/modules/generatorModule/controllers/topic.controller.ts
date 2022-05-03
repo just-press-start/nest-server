@@ -9,10 +9,9 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { User } from 'src/schemas/user.schema';
-import { TopicService } from 'src/services/topic.service';
-import { Topic } from '../schemas/topic.schema';
-@Controller('topic')
+import { TopicService } from 'src/modules/generatorModule/services/topic.service';
+import { Topic } from '../../../schemas/topic.schema';
+@Controller('topics')
 export class TopicController {
   constructor(private readonly topicService: TopicService) {}
 

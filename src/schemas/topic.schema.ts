@@ -2,15 +2,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { CategorySchema, Category } from './category.schema';
 
-export type TopicDocument = Topic & Document;
-
 @Schema()
-export class Topic {
+export class Topic extends Document {
   @Prop()
   name: string;
 
   @Prop({ type: [CategorySchema] })
-  activities: Category[];
+  categories: Category[];
 }
 
 export const TopicSchema = SchemaFactory.createForClass(Topic);

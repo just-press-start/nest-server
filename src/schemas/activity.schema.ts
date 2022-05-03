@@ -2,10 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { AchievementSchema, Achievement } from './achievement.schema';
 
-export type ActivityDocument = Activity & Document;
-
-@Schema()
 export class Activity {
+  @Prop()
+  _id: number;
+
   @Prop()
   name: string;
 

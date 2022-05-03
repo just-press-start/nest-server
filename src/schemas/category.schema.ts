@@ -1,11 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
 import { Activity, ActivitySchema } from './activity.schema';
+import { Document } from 'mongoose';
 
-export type CategoryDocument = Category & Document;
-
-@Schema()
-export class Category {
+@Schema({ _id: true })
+export class Category extends Document {
   @Prop()
   name: string;
 
