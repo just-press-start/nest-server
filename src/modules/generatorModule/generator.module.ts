@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
 import { TopicController } from './controllers/topic.controller';
 import { TopicService } from './services/topic.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -14,7 +16,11 @@ import { AchievementController } from './controllers/achievement.controller';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/100-things'),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `${process.env.NODE_ENV}.env`,
+    }),
+    MongooseModule.forRoot(process.env.DATABASE_URI),
     MongooseModule.forFeature([{ name: Topic.name, schema: TopicSchema }]),
   ],
   controllers: [
