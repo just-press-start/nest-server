@@ -23,6 +23,14 @@ export class TopicController {
     });
   }
 
+  @Get('/:id')
+  async getTopic(@Res() response, @Param('id') id) {
+    const topic = await this.topicService.getTopic(id);
+    return response.status(HttpStatus.OK).json({
+      topic,
+    });
+  }
+
   @Get()
   async findAll(@Res() response) {
     const topics = await this.topicService.findAll();
