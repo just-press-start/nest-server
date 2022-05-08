@@ -13,6 +13,7 @@ import { ActivityService } from './services/activity.service';
 import { AchievementService } from './services/achievement.service';
 
 import { AchievementController } from './controllers/achievement.controller';
+import { Helper } from './helpers/helper';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AchievementController } from './controllers/achievement.controller';
     CategoryService,
     ActivityService,
     AchievementService,
+    Helper,
   ],
 })
 export class GeneratorModule {}

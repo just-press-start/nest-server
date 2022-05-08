@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { Activity } from '../../../schemas/activity.schema';
 import { Topic } from '../../../schemas/topic.schema';
 import { Category } from '../../../schemas/category.schema';
+import { AchievementService } from './achievement.service';
+import { Helper } from '../helpers/helper';
 
 @Injectable()
 export class ActivityService {
   constructor(
     @InjectModel(Topic.name)
     private topicModel: Model<Topic>,
+    private readonly helper: Helper,
   ) {}
 
   async findAll(topicId, categoryId): Promise<Activity[]> {
@@ -79,11 +82,17 @@ export class ActivityService {
     activityId,
     newActivity: Activity,
   ): Promise<Topic> {
+    console.log(newActivity);
+    const setQueryObject = this.helper.getUpdatedFieldsQuery(
+      newActivity,
+      'categories.$[i].activities.$[j]',
+    );
+    console.log(setQueryObject);
     await this.topicModel.updateOne(
       {
         _id: topicId,
       },
-      { $set: { 'categories.$[i].activities.$[j]': newActivity } },
+      { $set: setQueryObject },
       {
         arrayFilters: [
           {
