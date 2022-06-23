@@ -8,11 +8,13 @@ import {
   Post,
   Put,
   Res,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../../../schemas/category.schema';
 import { Activity } from '../../../schemas/activity.schema';
 import { ActivityService } from '../services/activity.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('topics/:topicId/categories/:categoryId/activities')
 export class ActivityController {
@@ -65,6 +67,7 @@ export class ActivityController {
   }
 
   @Put('/:activityId')
+  @UseInterceptors(FileInterceptor('file'))
   async update(
     @Res() response,
     @Param('topicId') topicId,

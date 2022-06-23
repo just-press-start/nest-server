@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
 import { TopicController } from './controllers/topic.controller';
 import { TopicService } from './services/topic.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,10 +13,15 @@ import { ActivityService } from './services/activity.service';
 import { AchievementService } from './services/achievement.service';
 
 import { AchievementController } from './controllers/achievement.controller';
+import { Helper } from './helpers/helper';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/100-things'),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `${process.env.NODE_ENV}.env`,
+    }),
+    MongooseModule.forRoot(process.env.DATABASE_URI),
     MongooseModule.forFeature([{ name: Topic.name, schema: TopicSchema }]),
   ],
   controllers: [
@@ -28,6 +35,7 @@ import { AchievementController } from './controllers/achievement.controller';
     CategoryService,
     ActivityService,
     AchievementService,
+    Helper,
   ],
 })
 export class GeneratorModule {}

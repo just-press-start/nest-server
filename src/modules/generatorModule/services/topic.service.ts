@@ -28,4 +28,8 @@ export class TopicService {
   async delete(id): Promise<any> {
     return await this.topicModel.findByIdAndRemove(id);
   }
+
+  async getTopic(id): Promise<Topic> {
+    return await this.topicModel.findOne({ _id: id }).exec();
+  }
 }
