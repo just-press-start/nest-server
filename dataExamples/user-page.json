@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "name": "doruk",
+    "profile-picture": "pic",
+    "plots": [
+      {
+        "island_id": "1",
+        "plot_coordinate": "A1",
+        "plot_id": "uuid"
+      }
+    ]
+  },
+  {
+    "name": "baris",
+    "profile-picture": "pic",
+    "plots": [
+      {
+        "island": {
+          "name": "island-1"
+        }
+      }
+    ]
+  }
+]
+
+
+

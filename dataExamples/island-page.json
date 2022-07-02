@@ -1,0 +1,20 @@
+
+{
+  "id": 1,
+  "name": "island-1",
+  "img": "island-img-1",
+  "plots": [
+    {
+      "id": 1,
+      "name": "plot-1",
+      "color": "plot-color-1",
+      "user_name": "doruk_98"
+    },
+    {
+      "id": 2,
+      "name": "plot-2",
+      "color": "plot-color-2",
+      "user_name": "baris_96"
+    }
+  ]
+}
