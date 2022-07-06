@@ -37,3 +37,14 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Create new module with Nestjs
+```bash
+nest g module coreModule
+// creates module
+
+nest g controller coreModule/islandsController
+// creates controller
+// creates test file for controller
+// adds controller to module file
+```
