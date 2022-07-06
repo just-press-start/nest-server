@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
-import { Topic, TopicSchema } from './topic.schema';
+import { Plot, PlotSchema } from './plot.schema';
 
 export type UserDocument = User & Document;
 
@@ -12,10 +12,10 @@ export class User {
   name: string;
 
   @Prop({ required: true })
-  password: string;
+  profilePicture: string;
 
-  @Prop({ type: [TopicSchema] })
-  activities: Topic[];
+  @Prop({ type: [PlotSchema] })
+  plots: Plot[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
