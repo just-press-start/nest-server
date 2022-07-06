@@ -1,10 +1,7 @@
 # 100-things
 
 ## Description
-Postman Collection URL: https://www.getpostman.com/collections/ee57e599d0826fd6ff63
-
-- All crud operations are done for generating.
-
+Open localhost:PORT for swagger.
 
 ## Installation
 
@@ -40,10 +37,10 @@ $ npm run test:cov
 
 ## Create new module with Nestjs
 ```bash
-nest g module coreModule
+nest g module core
 // creates module
 
-nest g controller coreModule/islandsController
+nest g controller coreModule/islands
 // creates controller
 // creates test file for controller
 // adds controller to module file
