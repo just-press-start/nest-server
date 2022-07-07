@@ -45,3 +45,19 @@ nest g controller coreModule/islands
 // creates test file for controller
 // adds controller to module file
 ```
+
+## TODO
+Where should we set return types of endpoints? For now its in service layer. Maybe mappers?
+
+Error handlings and where to do them with encapsulation?
+
+JWT auth for admin
+Middleware mechanism for admin only endpoints.
+
+Inherit classes from Plot
+
+CI/CD
+
+Run tests after every commit
+
+Unit tests, Integration tests
