@@ -41,4 +41,8 @@ export class IslandsService {
     async delete(id): Promise<Island> {
         return await this.islandModel.findByIdAndRemove(id);
     }
+
+    async deleteAll(): Promise<any> {
+        return await this.islandModel.deleteMany();
+    }
 }

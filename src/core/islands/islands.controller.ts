@@ -50,6 +50,14 @@ export class IslandsController {
         });
     }
 
+    @Delete()
+    async deleteAll(@Res() response): Promise<Response> {
+        const deleteResult = await this.islandsService.deleteAll();
+        return response.status(HttpStatus.OK).json({
+            deleteResult,
+        });
+    }
+
 
 }
 
