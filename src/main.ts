@@ -10,14 +10,13 @@ async function bootstrap() {
   const PORT = configService.get<number>('PORT');
 
   const config = new DocumentBuilder()
-  .setTitle('Cats example')
-  .setDescription('The cats API description')
-  .setVersion('1.0')
-  .addTag('cats')
-  .build();
+    .setTitle('Island Generator')
+    .setDescription('Island plot claiming API description.')
+    .setVersion('1.0')
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/', app, document);
- 
+
   await app.listen(PORT);
 }
 bootstrap();
