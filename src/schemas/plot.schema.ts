@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 
 //TODO: plot will extend Blog, Sketch, Excel...
 @Schema()
-export class Plot extends Document {
+export class Plot {
   @Prop()
   @ApiProperty()
   name: string;

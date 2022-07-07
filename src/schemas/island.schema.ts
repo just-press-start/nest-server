@@ -3,8 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Document } from 'mongoose';
 import { PlotSchema, Plot } from './plot.schema';
 
+export type IslandDocument = Island & Document;
+
 @Schema()
-export class Island extends Document {
+export class Island {
   @Prop({ required: true })
   @ApiProperty()
   name: string;
@@ -14,11 +16,11 @@ export class Island extends Document {
   img: string;
 
   @Prop({ type: [PlotSchema], required: true })
-  @ApiProperty({
-    isArray: true,
-    type: Plot
-  })
   plots: Plot[];
+
+  @Prop({ required: true })
+  @ApiProperty()
+  islandSize: number;
 }
 
 export const IslandSchema = SchemaFactory.createForClass(Island);
