@@ -3,15 +3,15 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Schema()
 export class IslandPlot {
-    @Prop({ default: null })
+    @Prop()
     @ApiProperty()
     name: string;
 
-    @Prop({ default: null })
+    @Prop()
     @ApiProperty()
     color: string;
 
-    @Prop({ default: null })
+    @Prop()
     @ApiProperty()
     user_name: string;
 }

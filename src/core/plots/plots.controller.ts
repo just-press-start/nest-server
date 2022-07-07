@@ -2,6 +2,7 @@ import { Body, Controller, HttpStatus, Param, Post, Put, Res } from '@nestjs/com
 import { ApiParam } from '@nestjs/swagger';
 import { IslandPlot } from 'src/schemas/islandPlot.schema';
 import { Plot } from 'src/schemas/plot.schema';
+import { ClaimPlotDto } from './dtos/claimPlotDto';
 import { PlotsService } from './plots.service';
 
 @Controller(
@@ -13,10 +14,10 @@ export class PlotsController {
     @Put('/:plotId')
     @ApiParam({ name: 'plotId', required: true, description: 'plot object id' })
     @ApiParam({ name: 'islandId', required: true, description: 'island object id' })
-    async claimPlot(@Res() response, @Param('islandId') islandId, @Param('plotId') plotId, @Body() islandPlotDto: IslandPlot) {
-        const newPlot = await this.plotsService.claimPlot(islandId, plotId, islandPlotDto);
+    async claimPlot(@Res() response, @Param('islandId') islandId, @Param('plotId') plotId, @Body() claimPlotDto: ClaimPlotDto) {
+        const updatedIsland = await this.plotsService.claimPlot(islandId, plotId, claimPlotDto);
         return response.status(HttpStatus.OK).json({
-            newPlot,
+            updatedIsland,
         });
     }
 }
