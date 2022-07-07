@@ -13,7 +13,7 @@ export class PlotsService {
     ) { }
 
     async claimPlot(islandId, plotId, claimPlotDto: ClaimPlotDto) {
-        await this.islandModel.updateOne(
+        const updateResult = await this.islandModel.updateOne(
             { _id: islandId },
             { $set: { 'plots.$[i].user_name': claimPlotDto.user_name } },
             {
@@ -24,7 +24,12 @@ export class PlotsService {
                 ],
             },
         );
-        return await this.islandModel.findOne({ _id: islandId });
+
+        if (updateResult.matchedCount == 1) {
+            return await this.islandModel.findOne({ _id: islandId })
+        } else {
+            return null;
+        }
     }
 
 
