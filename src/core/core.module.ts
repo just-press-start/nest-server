@@ -4,6 +4,8 @@ import { IslandsService } from './islands/islands.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { Island, IslandSchema } from 'src/schemas/island.schema';
+import { PlotsController } from './plots/plots.controller';
+import { PlotsService } from './plots/plots.service';
 
 @Module({
   imports: [
@@ -15,10 +17,12 @@ import { Island, IslandSchema } from 'src/schemas/island.schema';
     MongooseModule.forFeature([{ name: Island.name, schema: IslandSchema }]),
   ],
   controllers: [
-    IslandsController
+    IslandsController,
+    PlotsController
   ],
   providers: [
-    IslandsService
+    IslandsService,
+    PlotsService
   ],
 })
 export class CoreModule { }
