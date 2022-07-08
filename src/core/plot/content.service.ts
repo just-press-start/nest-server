@@ -1,4 +1,4 @@
-import { InitContentDto } from './dtos/initContentDto';
+import { UpsertContentDto } from './dtos/upsertContentDto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Content, ContentDocument } from 'src/schemas/content.schema';
@@ -12,10 +12,12 @@ export class ContentsService {
         private contentModel: Model<ContentDocument>,
     ) { }
 
-    async initContent(id, initContentDto: InitContentDto) {
-        initContentDto._id = id;
-        const newIsland = new this.contentModel(initContentDto);
-        return newIsland.save();
+    async upsertContent(id, upsertContentDto: UpsertContentDto) {
+        upsertContentDto._id = id;
+        return await this.contentModel.updateOne(
+            { _id: upsertContentDto._id },
+            upsertContentDto
+        );
     }
 
     async findAll(): Promise<ContentsReturnType> {

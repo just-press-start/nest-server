@@ -1,7 +1,7 @@
 import { ContentsService } from './content.service';
 import { Body, Controller, Get, Param, Post, Res, HttpStatus, Delete } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
-import { InitContentDto } from './dtos/initContentDto';
+import { UpsertContentDto } from './dtos/upsertContentDto';
 import { Request, Response } from 'express';
 
 @ApiTags('contents')
@@ -13,8 +13,8 @@ export class ContentsController {
 
     @Post('/:plotId')
     @ApiParam({ name: 'plotId', required: true, description: 'plot object id' })
-    async initContent(@Res() response: Response, @Param('plotId') plotId, @Body() initContentDto: InitContentDto) {
-        const newContent = await this.contentsService.initContent(plotId, initContentDto)
+    async upsertContent(@Res() response: Response, @Param('plotId') plotId, @Body() upsertContentDto: UpsertContentDto) {
+        const newContent = await this.contentsService.upsertContent(plotId, upsertContentDto)
         return response.status(HttpStatus.CREATED).json({
             newContent,
         });
