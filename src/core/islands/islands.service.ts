@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Island, IslandDocument } from 'src/schemas/island.schema';
 import { IslandReturnType, IslandsReturnType } from './types';
 import { Model } from 'mongoose';
-import { IslandPlot } from 'src/schemas/islandPlot.schema';
+import { Plot } from 'src/schemas/plot.schema';
 
 @Injectable()
 export class IslandsService {
@@ -13,9 +13,9 @@ export class IslandsService {
     ) { }
 
     async create(islandDto: Island): Promise<Island> {
-        islandDto.plots = [] as IslandPlot[];
+        islandDto.plots = [] as Plot[];
         for (let i = 0; i < Math.pow(islandDto.islandSize, 2); i++) {
-            const plot = new IslandPlot();
+            const plot = new Plot();
             islandDto.plots.push(plot);
         }
         const newIsland = new this.islandModel(islandDto);

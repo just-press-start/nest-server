@@ -1,23 +1,19 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { ApiProperty } from "@nestjs/swagger";
 
-//TODO: plot will extend Blog, Sketch, Excel...
-
-export type PlotDocument = Plot & mongoose.Document;
-
-@Schema({ _id: false })
+@Schema()
 export class Plot {
-  @Prop()
-  _id: mongoose.Schema.Types.ObjectId
+    @Prop()
+    @ApiProperty()
+    name: string;
 
-  @Prop()
-  @ApiProperty()
-  name: string;
+    @Prop()
+    @ApiProperty()
+    color: string;
 
-  @Prop()
-  @ApiProperty()
-  type: string;
+    @Prop()
+    @ApiProperty()
+    user_name: string;
 }
 
 export const PlotSchema = SchemaFactory.createForClass(Plot);

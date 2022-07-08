@@ -1,34 +1,34 @@
-import { PlotService } from './plot.service';
+import { ContentsService } from './content.service';
 import { Body, Controller, Get, Param, Post, Res, HttpStatus, Delete } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
-import { InitializePlotDto } from './dtos/initializePlotDto';
+import { InitContentDto } from './dtos/initContentDto';
 import { Request, Response } from 'express';
 
-@ApiTags('plot')
-@Controller('plot')
-export class PlotController {
-    constructor(private readonly plotService: PlotService) {
+@ApiTags('contents')
+@Controller('contents')
+export class ContentsController {
+    constructor(private readonly contentsService: ContentsService) {
 
     }
 
     @Post('/:plotId')
     @ApiParam({ name: 'plotId', required: true, description: 'plot object id' })
-    async initializePlot(@Res() response: Response, @Param('plotId') plotId, @Body() initializePlotDto: InitializePlotDto) {
-        const newPlot = await this.plotService.initializePlot(plotId, initializePlotDto)
+    async initContent(@Res() response: Response, @Param('plotId') plotId, @Body() initContentDto: InitContentDto) {
+        const newContent = await this.contentsService.initContent(plotId, initContentDto)
         return response.status(HttpStatus.CREATED).json({
-            newPlot,
+            newContent,
         });
     }
 
     @Get()
     async findAll(@Res() response: Response) {
-        const plots = await this.plotService.findAll();
+        const plots = await this.contentsService.findAll();
         return response.status(HttpStatus.CREATED).json(plots);
     }
 
     @Delete()
     async deleteAll(@Res() response: Response) {
-        const plots = await this.plotService.deleteAll();
+        const plots = await this.contentsService.deleteAll();
         return response.status(HttpStatus.CREATED).json(plots);
     }
 }

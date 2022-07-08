@@ -1,9 +1,9 @@
-import { Plot } from "src/schemas/plot.schema";
+import { Content } from "src/schemas/content.schema";
 
-export type PlotsReturnType = {
-    plots: Plot[];
+export type ContentsReturnType = {
+    contents: Content[];
 }
 
-export type PlotReturnType = {
-    plot: Plot;
+export type ContentReturnType = {
+    content: Content;
 }

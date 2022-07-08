@@ -2,7 +2,7 @@ import { Prop } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
 import mongoose from "mongoose";
 
-export class InitializePlotDto {
+export class InitContentDto {
     @Prop()
     _id: mongoose.Schema.Types.ObjectId;
 

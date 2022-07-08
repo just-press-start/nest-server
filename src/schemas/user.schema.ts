@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
-import { Plot, PlotSchema } from './plot.schema';
+import { Content, ContentSchema } from './content.schema';
 
 export type UserDocument = User & Document;
 
@@ -14,8 +14,8 @@ export class User {
   @Prop({ required: true })
   profilePicture: string;
 
-  @Prop({ type: [PlotSchema] })
-  plots: Plot[];
+  @Prop({ type: [ContentSchema] })
+  plots: Content[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,4 +1,4 @@
-import { IslandPlot, IslandPlotSchema } from './islandPlot.schema';
+import { Plot, PlotSchema } from './plot.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document } from 'mongoose';
@@ -15,8 +15,8 @@ export class Island {
   @ApiProperty()
   img: string;
 
-  @Prop({ type: [IslandPlotSchema], required: true })
-  plots: IslandPlot[];
+  @Prop({ type: [PlotSchema], required: true })
+  plots: Plot[];
 
   @Prop({ required: true })
   @ApiProperty()
