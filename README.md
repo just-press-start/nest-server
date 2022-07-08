@@ -12,10 +12,8 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
-$ npm run start
 
-# watch mode
+# development mode
 $ npm run start:dev
 
 # production mode
