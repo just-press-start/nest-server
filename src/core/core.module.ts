@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Island, IslandSchema } from 'src/schemas/island.schema';
 import { IslandPlotsController } from './islands/islandPlots/islandPlots.controller';
 import { IslandPlotsService } from './islands/islandPlots/islandPlots.service';
+import { PlotController } from './plot/plot.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { IslandPlotsService } from './islands/islandPlots/islandPlots.service';
   ],
   controllers: [
     IslandsController,
-    IslandPlotsController
+    IslandPlotsController,
+    PlotController
   ],
   providers: [
     IslandsService,
