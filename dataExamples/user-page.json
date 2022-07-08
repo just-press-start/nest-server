@@ -7,6 +7,8 @@
       {
         "island_id": "1",
         "plot_coordinate": "A1",
+        "plot_color": "pink",
+        "plot_type": "blog",
         "plot_id": "uuid"
       }
     ]
@@ -23,6 +25,3 @@
     ]
   }
 ]
-
-
-
