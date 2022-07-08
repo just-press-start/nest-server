@@ -5,8 +5,8 @@ import { IslandsService } from './islands/islands.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { Island, IslandSchema } from 'src/schemas/island.schema';
-import { PlotsController } from './islands/islandPlots/plots.controller';
-import { PlotsService } from './islands/islandPlots/plots.service';
+import { PlotsController } from './islands/plots/plots.controller';
+import { PlotsService } from './islands/plots/plots.service';
 import { ContentsController } from './plot/content.controller';
 import { ContentsService } from './plot/content.service';
 
