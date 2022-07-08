@@ -4,8 +4,8 @@ import { IslandsService } from './islands/islands.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { Island, IslandSchema } from 'src/schemas/island.schema';
-import { PlotsController } from './plots/plots.controller';
-import { PlotsService } from './plots/plots.service';
+import { IslandPlotsController } from './islands/islandPlots/islandPlots.controller';
+import { IslandPlotsService } from './islands/islandPlots/islandPlots.service';
 
 @Module({
   imports: [
@@ -18,11 +18,11 @@ import { PlotsService } from './plots/plots.service';
   ],
   controllers: [
     IslandsController,
-    PlotsController
+    IslandPlotsController
   ],
   providers: [
     IslandsService,
-    PlotsService
+    IslandPlotsService
   ],
 })
 export class CoreModule { }

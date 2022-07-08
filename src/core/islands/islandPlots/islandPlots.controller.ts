@@ -4,20 +4,20 @@ import { IslandPlot } from 'src/schemas/islandPlot.schema';
 import { Plot } from 'src/schemas/plot.schema';
 import { ClaimPlotDto } from './dtos/claimPlotDto';
 import { EditPlotDto } from './dtos/editPlotDto';
-import { PlotsService } from './plots.service';
+import { IslandPlotsService } from './islandPlots.service';
 
-@ApiTags('plots')
+@ApiTags('island-plots')
 @Controller(
-    'islands/:islandId/plots',
+    'islands/:islandId/island-plots',
 )
-export class PlotsController {
-    constructor(private readonly plotsService: PlotsService) { }
+export class IslandPlotsController {
+    constructor(private readonly islandPlotsService: IslandPlotsService) { }
 
     @Post('/:plotId/claim-plot')
     @ApiParam({ name: 'plotId', required: true, description: 'plot object id' })
     @ApiParam({ name: 'islandId', required: true, description: 'island object id' })
     async claimPlot(@Res() response, @Param('islandId') islandId, @Param('plotId') plotId, @Body() claimPlotDto: ClaimPlotDto) {
-        const updatedIsland = await this.plotsService.claimPlot(islandId, plotId, claimPlotDto);
+        const updatedIsland = await this.islandPlotsService.claimPlot(islandId, plotId, claimPlotDto);
         return response.status(HttpStatus.OK).json({
             updatedIsland,
         });
@@ -28,7 +28,7 @@ export class PlotsController {
     @ApiParam({ name: 'plotId', required: true, description: 'plot object id' })
     @ApiParam({ name: 'islandId', required: true, description: 'island object id' })
     async editPlot(@Res() response, @Param('islandId') islandId, @Param('plotId') plotId, @Body() editPlotDto: EditPlotDto) {
-        const updatedIsland = await this.plotsService.editPlot(islandId, plotId, editPlotDto);
+        const updatedIsland = await this.islandPlotsService.editPlot(islandId, plotId, editPlotDto);
         return response.status(HttpStatus.OK).json({
             updatedIsland,
         });

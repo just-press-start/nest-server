@@ -7,7 +7,7 @@ import { Model } from 'mongoose';
 
 
 @Injectable()
-export class PlotsService {
+export class IslandPlotsService {
     constructor(
         @InjectModel(Island.name)
         private islandModel: Model<Island>,
