@@ -20,8 +20,12 @@ import { multerOptions } from '../../../config/multer';
 export class PlotsController {
   constructor(private readonly plotsService: PlotsService) {}
 
-  @Post('/:plotId/claim-plot')
-  @ApiParam({ name: 'plotId', required: true, description: 'plot object id' })
+  @Post('/:plotId/claim-contents')
+  @ApiParam({
+    name: 'plotId',
+    required: true,
+    description: 'contents object id',
+  })
   @ApiParam({
     name: 'islandId',
     required: true,
@@ -44,9 +48,13 @@ export class PlotsController {
   }
 
   //TODO: add jwt middleware here which gives user credentials, we need to check if username equality.
-  @Post('/:plotId/edit-plot')
+  @Post('/:plotId/edit-contents')
   @ApiConsumes('multipart/form-data')
-  @ApiParam({ name: 'plotId', required: true, description: 'plot object id' })
+  @ApiParam({
+    name: 'plotId',
+    required: true,
+    description: 'contents object id',
+  })
   @ApiParam({
     name: 'islandId',
     required: true,

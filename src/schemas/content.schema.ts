@@ -2,14 +2,14 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 
-//TODO: plot will extend Blog, Sketch, Excel...
+//TODO: contents will extend Blog, Sketch, Excel...
 
 export type ContentDocument = Content & mongoose.Document;
 
 @Schema({ _id: false })
 export class Content {
   @Prop()
-  _id: mongoose.Schema.Types.ObjectId
+  _id: mongoose.Schema.Types.ObjectId;
 
   @Prop()
   @ApiProperty()

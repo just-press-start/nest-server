@@ -13,7 +13,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Island Generator')
-    .setDescription('Island plot claiming API description.')
+    .setDescription('Island contents claiming API description.')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
