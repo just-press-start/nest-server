@@ -7,25 +7,25 @@ import { ContentsReturnType } from './types';
 
 @Injectable()
 export class ContentsService {
-    constructor(
-        @InjectModel(Content.name)
-        private contentModel: Model<ContentDocument>,
-    ) { }
+  constructor(
+    @InjectModel(Content.name)
+    private contentModel: Model<ContentDocument>,
+  ) {}
 
-    async upsertContent(id, upsertContentDto: UpsertContentDto) {
-        upsertContentDto._id = id;
-        return await this.contentModel.updateOne(
-            { _id: upsertContentDto._id },
-            upsertContentDto
-        );
-    }
+  async upsertContent(id, upsertContentDto: UpsertContentDto) {
+    upsertContentDto._id = id;
+    return await this.contentModel.updateOne(
+      { _id: upsertContentDto._id },
+      upsertContentDto,
+    );
+  }
 
-    async findAll(): Promise<ContentsReturnType> {
-        const contents: Content[] = await this.contentModel.find().exec();
-        return { 'contents': contents };
-    }
+  async findAll(): Promise<ContentsReturnType> {
+    const contents: Content[] = await this.contentModel.find().exec();
+    return { contents: contents };
+  }
 
-    async deleteAll(): Promise<any> {
-        return await this.contentModel.deleteMany();
-    }
+  async deleteAll(): Promise<any> {
+    return await this.contentModel.deleteMany();
+  }
 }

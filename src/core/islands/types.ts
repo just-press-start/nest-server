@@ -1,9 +1,9 @@
-import { Island } from "src/schemas/island.schema";
+import { Island } from 'src/schemas/island.schema';
 
 export type IslandsReturnType = {
-    islands: Island[];
-}
+  islands: Island[];
+};
 
 export type IslandReturnType = {
-    island: Island;
-}
+  island: Island;
+};

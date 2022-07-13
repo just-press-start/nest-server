@@ -1,8 +1,8 @@
-import { Prop } from "@nestjs/mongoose";
-import { ApiProperty } from "@nestjs/swagger";
+import { Prop } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ClaimPlotDto {
-    @Prop()
-    @ApiProperty()
-    user_name: string;
+  @Prop()
+  @ApiProperty()
+  user_name: string;
 }

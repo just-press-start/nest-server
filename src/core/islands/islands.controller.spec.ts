@@ -6,36 +6,33 @@ import { IslandsService } from './islands.service';
 describe('IslandsController', () => {
   let controller: IslandsController;
   const mockIslandService = {
-    getIslands: jest.fn(() => ({'islands': []})),
+    getIslands: jest.fn(() => ({ islands: [] })),
   };
 
-  beforeAll(async () => {  
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [IslandsController],
-      providers: [IslandsService]
+      providers: [IslandsService],
     })
-    .overrideProvider(IslandsService)
-    .useValue(mockIslandService)
-    .compile();
+      .overrideProvider(IslandsService)
+      .useValue(mockIslandService)
+      .compile();
     controller = module.get<IslandsController>(IslandsController);
   });
-
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  it("should return islands", () => {
+  it('should return islands', () => {
     const mockRequest = {} as unknown as Request;
     const mockResponse = {
-      status: jest.fn(x => mockResponse),
-      json: jest.fn(x => x)
+      status: jest.fn((x) => mockResponse),
+      json: jest.fn((x) => x),
     } as unknown as Response;
     expect(controller.getIslands(mockRequest, mockResponse)).toEqual({
-      'islands': expect.any(Array)
-    })
+      islands: expect.any(Array),
+    });
     expect(mockIslandService.getIslands).toHaveBeenCalledWith();
-  })
-
-
+  });
 });
