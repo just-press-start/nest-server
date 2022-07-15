@@ -3,8 +3,9 @@ import { ClaimPlotDto } from './dtos/claimPlotDto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Island } from 'src/schemas/island.schema';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Express } from 'express';
+import Helper from '../../../helpers/queryHelper';
 
 @Injectable()
 export class PlotsService {
@@ -46,14 +47,20 @@ export class PlotsService {
     editPlotDto: EditPlotDto,
     img: Express.Multer.File[],
   ) {
+    if (img && img.length > 0) {
+      editPlotDto.img = img[0].filename;
+    } else {
+      editPlotDto.img = null;
+    }
+    const setQuery = Helper.generateMongodbSetQuery(
+      editPlotDto,
+      'plots.$[i]',
+      false,
+    );
     const updateResult = await this.islandModel.updateOne(
       { _id: islandId },
       {
-        $set: {
-          'plots.$[i].color': editPlotDto.color,
-          'plots.$[i].name': editPlotDto.name,
-          'plots.$[i].img': img[0].filename,
-        },
+        $set: setQuery,
       },
       {
         arrayFilters: [
@@ -69,5 +76,45 @@ export class PlotsService {
     } else {
       return null;
     }
+  }
+
+  async getPlot(islandId, plotId) {
+    const aggregateResult = await this.islandModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(islandId),
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          plots: {
+            $filter: {
+              input: '$plots',
+              as: 'plots',
+              cond: {
+                $eq: ['$$plots._id', new mongoose.Types.ObjectId(plotId)],
+              },
+            },
+          },
+        },
+      },
+      { $project: { plot: { $first: '$plots' } } },
+      { $limit: 1 },
+    ]);
+    const plot = aggregateResult[0].plot;
+    return plot;
+  }
+
+  async getPlotOld(islandId, plotId) {
+    const result = await this.islandModel.find(
+      {
+        _id: islandId,
+        plots: { $elemMatch: { _id: plotId } },
+      },
+      { 'plots.$': 1, name: 1 },
+    );
+    console.log(result);
+    return result;
   }
 }
