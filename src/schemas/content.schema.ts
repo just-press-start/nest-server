@@ -19,8 +19,11 @@ export class Content {
   @ApiProperty()
   type: string;
 
-  @Prop()
+  @Prop({ default: undefined })
   posts?: [];
+
+  @Prop({ default: undefined })
+  images?: [];
 }
 
 export const ContentSchema = SchemaFactory.createForClass(Content);

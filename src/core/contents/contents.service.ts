@@ -13,11 +13,15 @@ export class ContentsService {
   ) {}
 
   async upsertContent(id, upsertContentDto: UpsertContentDto) {
+    console.log(upsertContentDto);
     upsertContentDto._id = id;
     if (upsertContentDto.type == 'blog') {
       upsertContentDto.posts = [];
     }
-    return await this.contentModel.updateOne(
+    if (upsertContentDto.type == 'images') {
+      upsertContentDto.images = [];
+    }
+    return this.contentModel.updateOne(
       { _id: upsertContentDto._id },
       upsertContentDto,
       { upsert: true },

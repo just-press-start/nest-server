@@ -17,4 +17,7 @@ export class UpsertContentDto {
 
   @Prop()
   posts?: [];
+
+  @Prop()
+  images?: [];
 }

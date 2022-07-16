@@ -16,6 +16,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserGuard } from '../helpers/guards/user.guard';
 import { BlogController } from './contents/blog/blog.controller';
 import { BlogService } from './contents/blog/blog.service';
+import { ImagesController } from './contents/images/images.controller';
+import { ImagesService } from './contents/images/images.service';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { BlogService } from './contents/blog/blog.service';
     ContentsController,
     UsersController,
     BlogController,
+    ImagesController,
   ],
   providers: [
     IslandsService,
@@ -49,6 +52,7 @@ import { BlogService } from './contents/blog/blog.service';
       useClass: UserGuard,
     },
     BlogService,
+    ImagesService,
   ],
 })
 export class CoreModule {}
