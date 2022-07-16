@@ -18,6 +18,9 @@ export class Content {
   @Prop()
   @ApiProperty()
   type: string;
+
+  @Prop()
+  posts?: [];
 }
 
 export const ContentSchema = SchemaFactory.createForClass(Content);

@@ -114,7 +114,6 @@ export class PlotsService {
       },
       { 'plots.$': 1, name: 1 },
     );
-    console.log(result);
     return result;
   }
 }

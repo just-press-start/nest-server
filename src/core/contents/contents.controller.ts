@@ -44,6 +44,17 @@ export class ContentsController {
     return response.status(HttpStatus.CREATED).json(plots);
   }
 
+  @Get('/:plotId')
+  @ApiParam({
+    name: 'plotId',
+    required: true,
+    description: 'contents object id',
+  })
+  async findByPlotId(@Param('plotId') plotId, @Res() response: Response) {
+    const plots = await this.contentsService.findByPlotId(plotId);
+    return response.status(HttpStatus.CREATED).json(plots);
+  }
+
   @Delete()
   async deleteAll(@Res() response: Response) {
     const plots = await this.contentsService.deleteAll();

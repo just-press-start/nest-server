@@ -14,4 +14,7 @@ export class UpsertContentDto {
   @ApiProperty()
   //TODO: add enum here
   type: string;
+
+  @Prop()
+  posts?: [];
 }

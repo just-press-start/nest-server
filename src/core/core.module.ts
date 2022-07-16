@@ -14,6 +14,8 @@ import { UsersService } from './users/users.service';
 import { User, UserSchema } from '../schemas/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { UserGuard } from '../helpers/guards/user.guard';
+import { BlogController } from './contents/blog/blog.controller';
+import { BlogService } from './contents/blog/blog.service';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { UserGuard } from '../helpers/guards/user.guard';
     PlotsController,
     ContentsController,
     UsersController,
+    BlogController,
   ],
   providers: [
     IslandsService,
@@ -45,6 +48,7 @@ import { UserGuard } from '../helpers/guards/user.guard';
       provide: UserGuard,
       useClass: UserGuard,
     },
+    BlogService,
   ],
 })
 export class CoreModule {}

@@ -14,7 +14,9 @@ export class ContentsService {
 
   async upsertContent(id, upsertContentDto: UpsertContentDto) {
     upsertContentDto._id = id;
-    console.log(upsertContentDto);
+    if (upsertContentDto.type == 'blog') {
+      upsertContentDto.posts = [];
+    }
     return await this.contentModel.updateOne(
       { _id: upsertContentDto._id },
       upsertContentDto,
@@ -25,6 +27,13 @@ export class ContentsService {
   async findAll(): Promise<ContentsReturnType> {
     const contents: Content[] = await this.contentModel.find().exec();
     return { contents: contents };
+  }
+
+  async findByPlotId(plotId) {
+    const content: Content = await this.contentModel
+      .findOne({ _id: plotId })
+      .exec();
+    return content;
   }
 
   async deleteAll(): Promise<any> {
