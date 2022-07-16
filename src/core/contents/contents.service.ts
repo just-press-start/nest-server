@@ -14,9 +14,11 @@ export class ContentsService {
 
   async upsertContent(id, upsertContentDto: UpsertContentDto) {
     upsertContentDto._id = id;
+    console.log(upsertContentDto);
     return await this.contentModel.updateOne(
       { _id: upsertContentDto._id },
       upsertContentDto,
+      { upsert: true },
     );
   }
 
