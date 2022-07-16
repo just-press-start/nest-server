@@ -1,18 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Model } from 'mongoose';
+import { Document } from 'mongoose';
 import { Content, ContentSchema } from './content.schema';
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  findByName: Function;
-
   @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
-  profilePicture: string;
+  password: string;
 
   @Prop({ type: [ContentSchema] })
   plots: Content[];

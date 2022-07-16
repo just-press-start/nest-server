@@ -7,14 +7,16 @@ import {
   Post,
   Res,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiCookieAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ClaimPlotDto } from './dtos/claimPlotDto';
 import { EditPlotDto } from './dtos/editPlotDto';
 import { PlotsService } from './plots.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '../../../config/multer';
+import { UserGuard } from '../../../helpers/guards/user.guard';
 
 @ApiTags('plots')
 @Controller('islands/:islandId/plots')
@@ -61,6 +63,8 @@ export class PlotsController {
     required: true,
     description: 'island object id',
   })
+  @ApiCookieAuth('jwt')
+  @UseGuards(UserGuard)
   @UseInterceptors(FilesInterceptor('img', null, multerOptions))
   async editPlot(
     @Res() response,
