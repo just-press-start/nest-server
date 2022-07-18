@@ -26,9 +26,6 @@ export class ImagesService {
       },
     );
     const plot = await this.contentModel.findOne({ _id: plotId }).exec();
-    const plotAll = await this.contentModel.find().exec();
-    console.log(plot);
-    console.log(plotAll);
     return plot;
   }
 }
