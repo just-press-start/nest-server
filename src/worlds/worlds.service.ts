@@ -5,28 +5,41 @@ import { Model } from 'mongoose';
 import { World, WorldDocument } from './schemas/world.schema';
 import { WorldDto } from './models/dto/WorldDto';
 import { generateOceanPlots } from './generators/generators';
+import { WorldsGetDto } from './models/dto/WorldsGetDto';
 
 @Injectable()
-export class WorldService {
+export class WorldsService {
   constructor(
     @InjectModel(World.name)
     private worldModel: Model<WorldDocument>,
   ) {}
 
-  //TODO: populate "Island" document when world created.
+  //TODO: populate "Island" document when worlds created.
   async createWorld(body: WorldDto): Promise<WorldGetDto> {
     const newOcean: World = {
       name: body.name,
       img: body.img,
       sideLength: body.sideLength,
-      oceanPlots: generateOceanPlots(body.sideLength, body.islandCount),
+      worldPlots: generateOceanPlots(body.sideLength, body.islandCount),
     };
     const newOceanModel = new this.worldModel(newOcean);
     const insertResult = await newOceanModel.save();
     return this.worldModel.findOne({ _id: insertResult._id }).lean();
   }
 
+  async getWorlds(): Promise<WorldsGetDto> {
+    return this.worldModel.find().lean();
+  }
+
   async getWorldById(id: string): Promise<WorldGetDto> {
     return this.worldModel.findOne({ _id: id }).lean();
+  }
+
+  async deleteWorld(id: string): Promise<any> {
+    return this.worldModel.findByIdAndRemove(id);
+  }
+
+  async deleteWorlds(): Promise<any> {
+    return this.worldModel.deleteMany();
   }
 }

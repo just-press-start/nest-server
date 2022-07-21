@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { WorldModule } from './world/world.module';
+import { WorldsModule } from './worlds/worlds.module';
 import { IslandsModule } from './islands/islands.module';
 import { IslandPlotsModule } from './islandPlots/islandPlots.module';
 import { ContentsModule } from './contents/contents.module';
@@ -7,7 +7,7 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    WorldModule,
+    WorldsModule,
     IslandsModule,
     IslandPlotsModule,
     ContentsModule,

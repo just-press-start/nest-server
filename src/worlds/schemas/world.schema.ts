@@ -13,7 +13,7 @@ export class World {
   img: string;
 
   @Prop({ type: [WorldPlotSchema], required: true })
-  oceanPlots: WorldPlot[];
+  worldPlots: WorldPlot[];
 
   @Prop({ required: true })
   sideLength: number;

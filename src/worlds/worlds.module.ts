@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { WorldController } from './world.controller';
-import { WorldService } from './world.service';
+import { WorldsController } from './worlds.controller';
+import { WorldsService } from './worlds.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { World, WorldSchema } from './schemas/world.schema';
@@ -14,7 +14,7 @@ import { World, WorldSchema } from './schemas/world.schema';
     MongooseModule.forRoot(process.env.DATABASE_URI),
     MongooseModule.forFeature([{ name: World.name, schema: WorldSchema }]),
   ],
-  controllers: [WorldController],
-  providers: [WorldService],
+  controllers: [WorldsController],
+  providers: [WorldsService],
 })
-export class WorldModule {}
+export class WorldsModule {}

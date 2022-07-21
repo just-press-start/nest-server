@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class WorldDto {
-  @ApiProperty({ example: 'biggest world' })
+  @ApiProperty({ example: 'biggest worlds' })
   name: string;
 
   @ApiProperty({ example: 'img.png' })

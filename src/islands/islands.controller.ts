@@ -1,17 +1,7 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { Island } from 'src/islands/schemas/island.schema';
 import { IslandsService } from './islands.service';
-import { IslandDto } from './models/dto/IslandDto';
 import { IslandGetDto } from './models/dto/IslandGetDto';
 import { IslandsGetDto } from './models/dto/IslandsGetDto';
 
@@ -21,11 +11,6 @@ export class IslandsController {
   constructor(private readonly islandsService: IslandsService) {}
 
   //TODO: add return types without Res.
-  @Post()
-  async createIsland(@Body() body: IslandDto): Promise<IslandGetDto> {
-    return this.islandsService.create(body);
-  }
-
   @Get()
   async getIslands(): Promise<IslandsGetDto> {
     return this.islandsService.findAll();
@@ -50,7 +35,7 @@ export class IslandsController {
   }
 
   @Delete()
-  async deleteAll(@Res() response): Promise<any> {
+  async deleteAll(): Promise<any> {
     return this.islandsService.deleteAll();
   }
 }
