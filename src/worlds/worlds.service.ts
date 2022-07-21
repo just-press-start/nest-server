@@ -16,11 +16,12 @@ export class WorldsService {
 
   //TODO: populate "Island" document when worlds created.
   async createWorld(body: WorldDto): Promise<WorldGetDto> {
+    const { name, img, sideLength, islandCount } = body;
     const newOcean: World = {
-      name: body.name,
-      img: body.img,
-      sideLength: body.sideLength,
-      worldPlots: generateOceanPlots(body.sideLength, body.islandCount),
+      name,
+      img,
+      sideLength,
+      worldPlots: await generateOceanPlots(sideLength, islandCount),
     };
     const newOceanModel = new this.worldModel(newOcean);
     const insertResult = await newOceanModel.save();

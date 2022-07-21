@@ -1,18 +1,24 @@
 //TODO: plug map-generator service here.
 import { WorldPlot } from '../schemas/worldPlot.schema';
+import IslandGeneratorAPI from '../worldsAdapter';
 
-export const generateOceanPlots = (
+export const generateOceanPlots = async (
   sideLength: number,
   islandCount: number,
-): WorldPlot[] => {
+): Promise<WorldPlot[]> => {
   const generatedOceanPlots = [] as WorldPlot[];
   const pixelCount = Math.pow(sideLength, 2);
   const islandPlotIndexes = generateOceanIndexes(pixelCount, islandCount);
+  const islandPictureNames = await IslandGeneratorAPI.getIslandPictureNames(
+    islandCount,
+  );
   for (let i = 0; i < pixelCount; i++) {
     let plot;
     if (i == islandPlotIndexes[0]) {
       islandPlotIndexes.shift();
-      plot = generateIslandPlot();
+      const islandPictureName = islandPictureNames[0];
+      islandPictureNames.shift();
+      plot = generateIslandPlot(islandPictureName);
     } else {
       plot = generateOceanPlot();
     }
@@ -37,10 +43,10 @@ const shuffleArray = (array): number[] => {
 };
 
 //TODO: generate island name from an external api
-const generateIslandPlot = (): WorldPlot => {
+const generateIslandPlot = (islandImageName: string): WorldPlot => {
   const islandPlot = new WorldPlot();
   islandPlot.isIsland = true;
-  islandPlot.img = '0a059a33-3d0c-4d60-80be-ac69368b4c4a.png';
+  islandPlot.img = islandImageName;
   islandPlot.name = 'temp';
   return islandPlot;
 };
