@@ -1,15 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class WorldDto {
-  @ApiProperty({ example: 'biggest worlds' })
+  @ApiProperty({ example: 'biggest world' })
   name: string;
 
-  @ApiProperty({ example: 'img.png' })
+  @ApiProperty({
+    type: 'file',
+    properties: {
+      file: {
+        type: 'string',
+        format: 'binary',
+      },
+    },
+  })
   img: string;
 
-  @ApiProperty({ example: '10' })
+  @ApiProperty({ example: '2' })
   sideLength: number;
 
-  @ApiProperty({ example: '3' })
+  @ApiProperty({ example: '2' })
   islandCount: number;
 }

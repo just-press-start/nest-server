@@ -6,6 +6,7 @@ import { World, WorldDocument } from './schemas/world.schema';
 import { WorldDto } from './models/dto/WorldDto';
 import { generateOceanPlots } from './generators/generators';
 import { WorldsGetDto } from './models/dto/WorldsGetDto';
+import { Express } from 'express';
 
 @Injectable()
 export class WorldsService {
@@ -15,7 +16,15 @@ export class WorldsService {
   ) {}
 
   //TODO: populate "Island" document when worlds created.
-  async createWorld(body: WorldDto): Promise<WorldGetDto> {
+  async createWorld(
+    body: WorldDto,
+    images: Express.Multer.File[],
+  ): Promise<WorldGetDto> {
+    if (images && images.length > 0) {
+      body.img = images[0].filename;
+    } else {
+      body.img = null;
+    }
     const { name, img, sideLength, islandCount } = body;
     const newOcean: World = {
       name,
