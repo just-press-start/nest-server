@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { WorldPlot } from '../WorldPlot';
 import ObjectId = mongoose.Schema.Types.ObjectId;
 
 export class WorldGetDto {
@@ -6,5 +7,5 @@ export class WorldGetDto {
   img: string;
   name: string;
   sideLength: number;
-  worldPlots: [];
+  worldPlots: WorldPlot[];
 }

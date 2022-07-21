@@ -1,8 +1,17 @@
 import { Module } from '@nestjs/common';
-import { CoreModule } from './core/core.module';
 import { WorldModule } from './world/world.module';
+import { IslandsModule } from './islands/islands.module';
+import { IslandPlotsModule } from './islandPlots/islandPlots.module';
+import { ContentsModule } from './contents/contents.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [CoreModule, WorldModule],
+  imports: [
+    WorldModule,
+    IslandsModule,
+    IslandPlotsModule,
+    ContentsModule,
+    UsersModule,
+  ],
 })
 export class AppModule {}
