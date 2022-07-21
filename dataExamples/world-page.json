@@ -1,0 +1,17 @@
+{
+  "_id": 1,
+  "sideLength": 20,
+  "name": "ocean1",
+  "cells": [
+    {
+      "id": 1,
+      "name": "island-1",
+      "img": "island-img-1",
+      "isIsland": true
+    },
+    {
+      "id": 2,
+      "isIsland": false
+    }
+  ]
+}
