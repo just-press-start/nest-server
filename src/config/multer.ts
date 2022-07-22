@@ -35,7 +35,6 @@ export const multerOptions = {
   storage: diskStorage({
     // Destination storage path details
     destination: (req: any, file: any, cb: any) => {
-      console.log(multerConfig);
       const uploadPath = multerConfig.dest;
       // Create folder if doesn't exist
       if (!existsSync(uploadPath)) {

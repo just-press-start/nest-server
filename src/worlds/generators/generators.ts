@@ -30,8 +30,9 @@ export const generateOceanPlots = async (
 // see: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 const generateOceanIndexes = (pixelCount: number, islandCount: number) => {
   const numbersArray = Array.from(Array(pixelCount).keys());
-  const shuffledArray = shuffleArray(numbersArray);
-  return shuffledArray.slice(0, islandCount).sort();
+  const shuffledArray = shuffleArray(numbersArray).slice(0, islandCount);
+  shuffledArray.sort((a, b) => a - b);
+  return shuffledArray;
 };
 
 const shuffleArray = (array): number[] => {
