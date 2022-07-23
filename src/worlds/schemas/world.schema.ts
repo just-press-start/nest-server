@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { WorldPlot, WorldPlotSchema } from './worldPlot.schema';
+import { FutureIsland } from '../models/FutureIsland';
 
 export type WorldDocument = World & Document;
 
@@ -14,6 +15,9 @@ export class World {
 
   @Prop({ type: [WorldPlotSchema], required: true })
   worldPlots: WorldPlot[];
+
+  @Prop({ required: true })
+  futureIslands: FutureIsland[];
 
   @Prop({ required: true })
   sideLength: number;

@@ -4,7 +4,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { World, WorldDocument } from './schemas/world.schema';
 import { WorldDto } from './models/dto/WorldDto';
-import { generateOceanPlots } from './generators/generators';
+import {
+  generateFutureIslands,
+  generateOceanPlots,
+} from './generators/generators';
 import { WorldsGetDto } from './models/dto/WorldsGetDto';
 import { Express } from 'express';
 
@@ -20,17 +23,25 @@ export class WorldsService {
     body: WorldDto,
     images: Express.Multer.File[],
   ): Promise<WorldGetDto> {
-    if (images && images.length > 0) {
-      body.img = images[0].filename;
-    } else {
-      body.img = null;
-    }
+    body.img = this.getImage(images);
     const { name, img, sideLength, islandCount } = body;
+    const { futureIslandCount, initialIslandCount } =
+      this.getIslandCounts(islandCount);
+    const { generatedOceanPlots, reservedIndexes } = await generateOceanPlots(
+      sideLength,
+      initialIslandCount,
+    );
+    const futureIslands = generateFutureIslands(
+      sideLength,
+      futureIslandCount,
+      reservedIndexes,
+    );
     const newOcean: World = {
       name,
       img,
       sideLength,
-      worldPlots: await generateOceanPlots(sideLength, islandCount),
+      futureIslands,
+      worldPlots: generatedOceanPlots,
     };
     const newOceanModel = new this.worldModel(newOcean);
     const insertResult = await newOceanModel.save();
@@ -51,5 +62,23 @@ export class WorldsService {
 
   async deleteWorlds(): Promise<any> {
     return this.worldModel.deleteMany();
+  }
+
+  getImage(images: Express.Multer.File[]): string {
+    if (images && images.length > 0) {
+      return images[0].filename;
+    } else {
+      return null;
+    }
+  }
+
+  getIslandCounts(islandCount) {
+    return {
+      futureIslandCount:
+        islandCount - Number(process.env.GENERATED_ISLAND_COUNT_ON_CREATION),
+      initialIslandCount: Number(
+        process.env.GENERATED_ISLAND_COUNT_ON_CREATION,
+      ),
+    };
   }
 }
