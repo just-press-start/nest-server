@@ -10,6 +10,7 @@ import {
 } from './generators/generators';
 import { WorldsGetDto } from './models/dto/WorldsGetDto';
 import { Express } from 'express';
+import WorldsAdapter from './worldsAdapter';
 
 @Injectable()
 export class WorldsService {
@@ -57,10 +58,22 @@ export class WorldsService {
   }
 
   async deleteWorld(id: string): Promise<any> {
+    const islandImages = await this.getIslandImages(id);
+    await WorldsAdapter.deleteIslandPictures(islandImages);
     return this.worldModel.findByIdAndRemove(id);
   }
 
+  private async getIslandImages(id: string) {
+    const islandImages = [];
+    const world: World = await this.worldModel.findOne({ _id: id }).lean();
+    for (const island of world.worldPlots) {
+      islandImages.push(island.img);
+    }
+    return islandImages;
+  }
+
   async deleteWorlds(): Promise<any> {
+    await WorldsAdapter.deleteAllIslandPictures();
     return this.worldModel.deleteMany();
   }
 
