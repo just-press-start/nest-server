@@ -6,6 +6,8 @@ import mongoose, { Model } from 'mongoose';
 import { WorldPlot } from './models/WorldPlot';
 import IslandGeneratorAPI from './worldsAdapter';
 import { FutureIsland } from './models/FutureIsland';
+import { Island, IslandDocument } from '../islands/schemas/island.schema';
+import { Plot } from '../islandPlots/schemas/islandPlot.schema';
 import ObjectId = mongoose.Schema.Types.ObjectId;
 
 @Injectable()
@@ -13,6 +15,8 @@ export class WorldsJobs {
   constructor(
     @InjectModel(World.name)
     private worldModel: Model<WorldDocument>,
+    @InjectModel(Island.name)
+    private islandModel: Model<IslandDocument>,
   ) {}
   private readonly logger = new Logger(WorldsJobs.name);
   queuedFutureIslands = [];
@@ -77,6 +81,7 @@ export class WorldsJobs {
   async updateIslandDocument(worldId, coordinate, islandObject) {
     const setObj = {};
     setObj[`worldPlots.${coordinate}`] = islandObject;
+    const islandId = await this.getIslandId(worldId, coordinate);
     const updateResult = await this.worldModel.updateOne(
       { _id: worldId },
       {
@@ -84,15 +89,45 @@ export class WorldsJobs {
       },
     );
     if (updateResult.acknowledged) {
-      const updateFutureIslandsResult = await this.worldModel.updateOne(
+      const pullFutureIslandsResult = await this.worldModel.updateOne(
         { _id: worldId },
         {
           $pull: { futureIslands: { coordinate: coordinate } },
         },
       );
+      if (pullFutureIslandsResult.acknowledged) {
+        const insertResult = await this.createIslandDocument(islandId);
+        console.log(insertResult);
+      }
     }
     this.logger.debug(
       `new island generated to worldId:${worldId} at coordinate:${coordinate}`,
     );
+  }
+
+  async getIslandId(worldId, coordinate) {
+    const worldObject: World = await this.worldModel
+      .findOne({ _id: worldId })
+      .lean();
+    return worldObject.worldPlots[coordinate]._id;
+  }
+
+  async createIslandDocument(islandId) {
+    const islandPictureName: string = (
+      await IslandGeneratorAPI.getIslandPictureNames(1)
+    )[0];
+
+    const islandPlots: Plot[] = await IslandGeneratorAPI.getIslandPlots(
+      islandPictureName,
+    );
+    const islandModel: Island = {
+      _id: islandId,
+      name: 'temp',
+      img: islandPictureName,
+      plots: islandPlots,
+    };
+    const newIslandDocument = new this.islandModel(islandModel);
+    const insertResult = await newIslandDocument.save();
+    return insertResult;
   }
 }

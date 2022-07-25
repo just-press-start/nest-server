@@ -4,16 +4,13 @@ import { ApiProperty } from '@nestjs/swagger';
 @Schema()
 export class Plot {
   @Prop()
-  @ApiProperty()
-  name: string;
+  i: number;
 
   @Prop()
-  @ApiProperty()
-  color: string;
+  j: number;
 
   @Prop()
-  @ApiProperty()
-  user_name: string;
+  isClaimable: boolean;
 
   @Prop()
   @ApiProperty({
