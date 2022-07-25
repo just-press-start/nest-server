@@ -11,12 +11,17 @@ import {
 import { WorldsGetDto } from './models/dto/WorldsGetDto';
 import { Express } from 'express';
 import WorldsAdapter from './worldsAdapter';
+import IslandGeneratorAPI from './worldsAdapter';
+import { Plot } from '../islandPlots/schemas/islandPlot.schema';
+import { Island, IslandDocument } from '../islands/schemas/island.schema';
 
 @Injectable()
 export class WorldsService {
   constructor(
     @InjectModel(World.name)
     private worldModel: Model<WorldDocument>,
+    @InjectModel(Island.name)
+    private islandModel: Model<IslandDocument>,
   ) {}
 
   //TODO: populate "Island" document when worlds created.
@@ -46,6 +51,11 @@ export class WorldsService {
     };
     const newOceanModel = new this.worldModel(newOcean);
     const insertResult = await newOceanModel.save();
+    for (const worldPlot of newOceanModel.worldPlots) {
+      if (worldPlot.isIsland) {
+        await this.createIslandDocument(worldPlot._id, worldPlot.img);
+      }
+    }
     return this.worldModel.findOne({ _id: insertResult._id }).lean();
   }
 
@@ -93,5 +103,20 @@ export class WorldsService {
         process.env.GENERATED_ISLAND_COUNT_ON_CREATION,
       ),
     };
+  }
+
+  async createIslandDocument(islandId, pictureName) {
+    const islandPlots: Plot[] = await IslandGeneratorAPI.getIslandPlots(
+      pictureName,
+    );
+    const islandModel: Island = {
+      _id: islandId,
+      name: 'temp',
+      img: pictureName,
+      plots: islandPlots,
+    };
+    const newIslandDocument = new this.islandModel(islandModel);
+    const insertResult = await newIslandDocument.save();
+    return insertResult;
   }
 }

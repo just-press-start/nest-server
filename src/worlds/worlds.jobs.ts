@@ -59,7 +59,7 @@ export class WorldsJobs {
     this.logger.debug(remainingMilliseconds);
     setTimeout(async () => {
       const islandObject = await this.generateIslandObject();
-      await this.updateIslandDocument(worldId, coordinate, islandObject);
+      await this.updateWorldDocument(worldId, coordinate, islandObject);
       const queueIndex = this.queuedFutureIslands.indexOf(islandHash);
       this.queuedFutureIslands.splice(queueIndex, 1);
     }, remainingMilliseconds);
@@ -78,28 +78,31 @@ export class WorldsJobs {
     };
   }
 
-  async updateIslandDocument(worldId, coordinate, islandObject) {
+  async updateWorldDocument(worldId, coordinate, islandObject) {
     const setObj = {};
     setObj[`worldPlots.${coordinate}`] = islandObject;
+    const worldObject: WorldDocument = await this.worldModel
+      .findOne({ _id: worldId })
+      .exec();
+    worldObject.worldPlots[coordinate].isIsland = islandObject.isIsland;
+    worldObject.worldPlots[coordinate].img = islandObject.img;
+    worldObject.worldPlots[coordinate].name = islandObject.name;
+    await worldObject.save();
     const islandId = await this.getIslandId(worldId, coordinate);
-    const updateResult = await this.worldModel.updateOne(
+
+    const pullFutureIslandsResult = await this.worldModel.updateOne(
       { _id: worldId },
       {
-        $set: setObj,
+        $pull: { futureIslands: { coordinate: coordinate } },
       },
     );
-    if (updateResult.acknowledged) {
-      const pullFutureIslandsResult = await this.worldModel.updateOne(
-        { _id: worldId },
-        {
-          $pull: { futureIslands: { coordinate: coordinate } },
-        },
+    if (pullFutureIslandsResult.acknowledged) {
+      const insertResult = await this.createIslandDocument(
+        islandId,
+        islandObject.img,
       );
-      if (pullFutureIslandsResult.acknowledged) {
-        const insertResult = await this.createIslandDocument(islandId);
-        console.log(insertResult);
-      }
     }
+
     this.logger.debug(
       `new island generated to worldId:${worldId} at coordinate:${coordinate}`,
     );
@@ -112,18 +115,14 @@ export class WorldsJobs {
     return worldObject.worldPlots[coordinate]._id;
   }
 
-  async createIslandDocument(islandId) {
-    const islandPictureName: string = (
-      await IslandGeneratorAPI.getIslandPictureNames(1)
-    )[0];
-
+  async createIslandDocument(islandId, pictureName) {
     const islandPlots: Plot[] = await IslandGeneratorAPI.getIslandPlots(
-      islandPictureName,
+      pictureName,
     );
     const islandModel: Island = {
       _id: islandId,
       name: 'temp',
-      img: islandPictureName,
+      img: pictureName,
       plots: islandPlots,
     };
     const newIslandDocument = new this.islandModel(islandModel);
