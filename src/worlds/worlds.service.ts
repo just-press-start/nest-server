@@ -4,10 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { World, WorldDocument } from './schemas/world.schema';
 import { WorldDto } from './models/dto/WorldDto';
-import {
-  generateFutureIslands,
-  generateOceanPlots,
-} from './generators/generators';
+import { generateOceanPlots } from './generators/generators';
 import { WorldsGetDto } from './models/dto/WorldsGetDto';
 import { Express } from 'express';
 import WorldsAdapter from './worldsAdapter';
@@ -33,20 +30,23 @@ export class WorldsService {
     const { name, img, sideLength, islandCount } = body;
     const { futureIslandCount, initialIslandCount } =
       this.getIslandCounts(islandCount);
+    console.log('asdasfafas');
     const { generatedOceanPlots, reservedIndexes } = await generateOceanPlots(
       sideLength,
       initialIslandCount,
+      initialIslandCount + futureIslandCount,
     );
+    /*
     const futureIslands = generateFutureIslands(
       sideLength,
       futureIslandCount,
       reservedIndexes,
     );
+     */
     const newOcean: World = {
       name,
       img,
       sideLength,
-      futureIslands,
       worldPlots: generatedOceanPlots,
     };
     const newOceanModel = new this.worldModel(newOcean);
@@ -118,5 +118,9 @@ export class WorldsService {
     const newIslandDocument = new this.islandModel(islandModel);
     const insertResult = await newIslandDocument.save();
     return insertResult;
+  }
+
+  getServerTime() {
+    return new Date().getTime();
   }
 }

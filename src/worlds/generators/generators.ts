@@ -3,7 +3,7 @@ import { WorldPlot } from '../schemas/worldPlot.schema';
 import IslandGeneratorAPI from '../worldsAdapter';
 import { FutureIsland } from '../models/FutureIsland';
 
-const ONE_MIN_MILLISECONDS = 60000;
+const ONE_MIN_MILLISECONDS = 30000;
 
 type generateOceanPlotsReturn = {
   generatedOceanPlots: WorldPlot[];
@@ -12,22 +12,36 @@ type generateOceanPlotsReturn = {
 
 export const generateOceanPlots = async (
   sideLength: number,
-  islandCount: number,
+  initialIslandCount: number,
+  totalIslandCount: number,
 ): Promise<generateOceanPlotsReturn> => {
+  const createdAtTimestamp = new Date().getTime();
   const generatedOceanPlots = [] as WorldPlot[];
   const pixelCount = Math.pow(sideLength, 2);
-  const islandPlotIndexes = generateIslandIndexes(pixelCount, islandCount);
+  const islandPlotIndexes = generateIslandIndexes(pixelCount, totalIslandCount);
   const _islandPlotIndexes = [...islandPlotIndexes];
   const islandPictureNames = await IslandGeneratorAPI.getIslandPictureNames(
-    islandCount,
+    totalIslandCount,
   );
+  const futureIslandsCreationTimes = createIslandGenerationTimestamps(
+    totalIslandCount - initialIslandCount,
+  );
+  let createdIslandCount = 0;
   for (let i = 0; i < pixelCount; i++) {
     let plot;
     if (i == _islandPlotIndexes[0]) {
       _islandPlotIndexes.shift();
       const islandPictureName = islandPictureNames[0];
       islandPictureNames.shift();
-      plot = generateIslandPlot(islandPictureName);
+      if (createdIslandCount >= initialIslandCount) {
+        plot = generateIslandPlot(
+          islandPictureName,
+          futureIslandsCreationTimes.shift(),
+        );
+      } else {
+        plot = generateIslandPlot(islandPictureName, createdAtTimestamp);
+      }
+      createdIslandCount += 1;
     } else {
       plot = generateOceanPlot();
     }
@@ -61,11 +75,15 @@ const shuffleArray = (array): number[] => {
 };
 
 //TODO: generate island name from an external api
-const generateIslandPlot = (islandImageName: string): WorldPlot => {
+const generateIslandPlot = (
+  islandImageName: string,
+  createdAtTimestamp: number,
+): WorldPlot => {
   const islandPlot = new WorldPlot();
   islandPlot.isIsland = true;
   islandPlot.img = islandImageName;
   islandPlot.name = 'temp';
+  islandPlot.createdAtTimestamp = createdAtTimestamp;
   return islandPlot;
 };
 
@@ -114,7 +132,7 @@ export const generateFutureIslands = (
   return futureIslands;
 };
 
-const createIslandGenerationTimestamps = (islandCount): number[] => {
+export const createIslandGenerationTimestamps = (islandCount): number[] => {
   let timeMilliseconds = new Date().getTime();
   const islandGenerationTimestamps = [] as number[];
   for (let i = 0; i < islandCount; i++) {

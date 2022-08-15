@@ -15,11 +15,22 @@ import { WorldGetDto } from './models/dto/WorldGetDto';
 import { WorldsGetDto } from './models/dto/WorldsGetDto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer';
+import IslandGeneratorAPI from './worldsAdapter';
 
 @ApiTags('worlds')
 @Controller('worlds')
 export class WorldsController {
   constructor(private readonly worldService: WorldsService) {}
+
+  @Get('serverTime')
+  getServerTime(): number {
+    return this.worldService.getServerTime();
+  }
+
+  @Get('temp')
+  async tempp(): Promise<any> {
+    return await IslandGeneratorAPI.getTemp();
+  }
 
   @Post()
   @ApiConsumes('multipart/form-data')

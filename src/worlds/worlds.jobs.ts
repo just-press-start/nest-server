@@ -1,4 +1,3 @@
-import { Cron } from '@nestjs/schedule';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { World, WorldDocument } from './schemas/world.schema';
@@ -21,7 +20,8 @@ export class WorldsJobs {
   private readonly logger = new Logger(WorldsJobs.name);
   queuedFutureIslands = [];
 
-  @Cron('*/30 * * * * *')
+  //@Cron('*/10 * * * * *')
+  /*
   async handleCron() {
     this.logger.debug('Cron job run!');
     const worlds: World[] = await this.worldModel.find().lean();
@@ -35,7 +35,7 @@ export class WorldsJobs {
       `queuedFutureIslands count: ${this.queuedFutureIslands.length}`,
     );
   }
-
+  */
   private processFutureIslands(futureIsland: FutureIsland, worldId: ObjectId) {
     const { islandGenerationTimestamp, coordinate } = futureIsland;
     const islandHash = this.getIslandHash(worldId, coordinate);

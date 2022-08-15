@@ -2,10 +2,23 @@ import axios from 'axios';
 
 export default {
   getIslandPictureNames: async (islandCount): Promise<string[]> => {
-    const response = await axios.get(
+    console.log(
+      'url',
       process.env.ISLAND_GENERATOR_URL + `/islands/names/${islandCount}`,
     );
-    return response.data;
+    try {
+      const response = await axios.get(
+        process.env.ISLAND_GENERATOR_URL + `/islands/names/${islandCount}`,
+      );
+      return response.data;
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+
+  getTemp: async () => {
+    console.log(process.env.ISLAND_GENERATOR_URL + '/temp');
+    return await axios.get(process.env.ISLAND_GENERATOR_URL + '/temp');
   },
 
   getIslandPlots: async (imageName): Promise<any> => {

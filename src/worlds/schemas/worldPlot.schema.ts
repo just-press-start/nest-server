@@ -13,6 +13,9 @@ export class WorldPlot {
 
   @Prop()
   isIsland: boolean;
+
+  @Prop()
+  createdAtTimestamp: number;
 }
 
 export const WorldPlotSchema = SchemaFactory.createForClass(WorldPlot);
