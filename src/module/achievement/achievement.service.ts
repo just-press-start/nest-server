@@ -6,6 +6,12 @@ export class AchievementService {
   constructor(private readonly achievementRepository: AchievementRepository) {}
 
   getAchievementByActivityName(activityName: string) {
-    return this.achievementRepository.getUserAchievements(activityName);
+    return this.achievementRepository.getAchievementByActivityName(
+      activityName,
+    );
+  }
+
+  getAchievements(userId: string) {
+    return this.achievementRepository.getUserAchievements(userId);
   }
 }

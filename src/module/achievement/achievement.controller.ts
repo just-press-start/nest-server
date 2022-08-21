@@ -2,13 +2,18 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { AchievementService } from './achievement.service';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('achievement')
-@Controller('achievement')
+@ApiTags('achievements')
+@Controller('achievements')
 export class AchievementController {
   constructor(private readonly achievementService: AchievementService) {}
 
   @Get('/:activityName')
-  getActivity(@Param('activityName') activityName: string) {
+  getActivityAchievement(@Param('activityName') activityName: string) {
     return this.achievementService.getAchievementByActivityName(activityName);
+  }
+
+  @Get('/user/:userId')
+  getAchievements(@Param('userId') userId: string) {
+    return this.achievementService.getAchievements(userId);
   }
 }

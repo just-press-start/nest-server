@@ -22,14 +22,21 @@ export class AchievementRepository {
       .getRawMany();
   }
 
-  getUserAchievements(activityName: string) {
+  getUserAchievements(userId: string) {
     return this.achievementRepository
       .createQueryBuilder('achievement')
       .select(
         'achievement.name as name, achievement.img as img, activity.name as activity_name',
       )
       .innerJoin('achievement.activity', 'activity')
-      .leftJoinAndSelect('activity.users', 'user')
+      .leftJoinAndSelect(
+        'activity.users',
+        'user',
+        'user.deviceId = :userId or user.deviceId is null',
+        {
+          userId,
+        },
+      )
       .getRawMany();
   }
 }
