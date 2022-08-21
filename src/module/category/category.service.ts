@@ -9,6 +9,6 @@ export class CategoryService {
   constructor(private readonly categoryRepository: CategoryRepository) {}
 
   findAll(): any {
-    return this.categoryRepository.getCategoriesWithProgress();
+    return this.categoryRepository.getCategoriesWithProgressWithTopics();
   }
 }

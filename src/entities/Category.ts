@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { Activity } from './Activity';
+import { Topic } from './Topic';
 
 @Entity()
 export class Category {
@@ -8,6 +9,9 @@ export class Category {
 
   @OneToMany(() => Activity, (activity) => activity.category)
   activity: Activity;
+
+  @ManyToOne(() => Topic, (topic) => topic)
+  topic: Topic;
 
   @Column({ length: 40 })
   img: string;

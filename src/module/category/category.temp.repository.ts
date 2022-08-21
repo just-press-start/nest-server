@@ -5,7 +5,6 @@ import { EntityManager, Repository } from 'typeorm';
 import { User } from '../../entities/User';
 import { Activity } from '../../entities/Activity';
 import { Topic } from '../../entities/Topic';
-import { CategoryMapper } from './category.mapper';
 
 @Injectable()
 export class CategoryRepository {
@@ -20,7 +19,6 @@ export class CategoryRepository {
     private topicRepository: Repository<Topic>,
     @InjectEntityManager()
     private entityManager: EntityManager,
-    private readonly categoryMapper: CategoryMapper,
   ) {}
 
   getUserActivitiesQuery() {
@@ -28,9 +26,7 @@ export class CategoryRepository {
       .createQueryBuilder('user')
       .innerJoinAndSelect('user.activities', 'activity')
       .innerJoin('activity.category', 'category')
-      .select(
-        'category.name as category_name, category.img as category_img, category.topicId as topic_id',
-      )
+      .select('category.name as category_name, category.topicId as topic_id')
       .addSelect('COUNT(activity.id)', 'user_activity_count')
       .groupBy('category_name, topic_id')
       .getSql();
@@ -58,7 +54,7 @@ export class CategoryRepository {
     return this.entityManager
       .createQueryBuilder()
       .select(
-        'user_activities.topic_id, user_activities.category_name, user_activities.category_img, user_activities.user_activity_count, all_activities.activity_count',
+        'user_activities.topic_id, user_activities.category_name, user_activities.user_activity_count, all_activities.activity_count',
       )
       .from('(' + this.getUserActivitiesQuery() + ')', 'user_activities')
       .innerJoin(
@@ -69,38 +65,14 @@ export class CategoryRepository {
       .getSql();
   }
 
-  async getCategoriesWithProgressWithTopics() {
-    const queryResult = await this.entityManager
+  getCategoriesWithProgressWithTopics() {
+    return this.entityManager
       .createQueryBuilder()
-      .select(
-        'topic_name, topic_img, category_name, category_img, activity_count, user_activity_count',
-      )
       .from('(' + this.getCategoriesWithProgress() + ')', 'categories')
       .innerJoin(
         '(' + this.getTopicsQuery() + ')',
         'topic',
         'categories.topic_id = topic.id',
-      )
-      .getRawMany();
-    const result = this.categoryMapper.mapper(queryResult);
-    return result;
-  }
-  //TEMP
-
-  // i can't use
-  getUserActivities(deviceId) {
-    return this.topicRepository
-      .createQueryBuilder('topic')
-      .select(
-        'topic.name as topic_name, topic.img as topic_img, category.name as category_name, category.img as category_img, user.device_id as user_device_id, COUNT(activity.id) as count',
-      )
-      .innerJoin('topic.category', 'category')
-      .innerJoin('category.activity', 'activity')
-      .leftJoin('activity.users', 'user', 'user.device_id=:deviceId', {
-        deviceId,
-      })
-      .groupBy(
-        'topic_name, topic_img, category_name, category_img, user_device_id',
       )
       .getRawMany();
   }
