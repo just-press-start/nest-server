@@ -3,11 +3,15 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './Category';
 import { User } from './User';
+import { JoinColumn } from 'typeorm';
+import { Achievement } from './Achievement';
 
 @Entity()
 export class Activity {
@@ -22,6 +26,10 @@ export class Activity {
 
   @ManyToMany(() => User, (user) => user.activities)
   users: User[];
+
+  @OneToOne(() => Achievement)
+  @JoinColumn()
+  achievement: Achievement;
 
   @Column({ length: 40 })
   img: string;
