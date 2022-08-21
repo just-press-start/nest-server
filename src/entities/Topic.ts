@@ -10,10 +10,7 @@ import { Category } from './Category';
 
 @Entity()
 export class Topic {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ length: 40 })
+  @PrimaryColumn({ length: 40 })
   name: string;
 
   @OneToMany(() => Category, (category) => category.topic)

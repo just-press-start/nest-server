@@ -3,6 +3,7 @@ import { CategoryModule } from './module/category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ActivityModule } from './module/activity/activity.module';
+import { AchievementModule } from './module/achievement/achievement.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ActivityModule } from './module/activity/activity.module';
     }),
     CategoryModule,
     ActivityModule,
+    AchievementModule,
   ],
 })
 export class AppModule {}

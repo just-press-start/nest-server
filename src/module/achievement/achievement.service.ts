@@ -1,0 +1,11 @@
+import { Injectable } from '@nestjs/common';
+import { AchievementRepository } from './achievement.repository';
+
+@Injectable()
+export class AchievementService {
+  constructor(private readonly achievementRepository: AchievementRepository) {}
+
+  getAchievementByActivityName(activityName: string) {
+    return this.achievementRepository.getUserAchievements(activityName);
+  }
+}

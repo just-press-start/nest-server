@@ -15,10 +15,7 @@ import { Achievement } from './Achievement';
 
 @Entity()
 export class Activity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ length: 40 })
+  @PrimaryColumn({ length: 40 })
   name: string;
 
   @ManyToOne(() => Category, (category) => category)
@@ -27,8 +24,7 @@ export class Activity {
   @ManyToMany(() => User, (user) => user.activities)
   users: User[];
 
-  @OneToOne(() => Achievement)
-  @JoinColumn()
+  @OneToOne(() => Achievement, (achievement) => achievement.activity)
   achievement: Achievement;
 
   @Column({ length: 40 })
