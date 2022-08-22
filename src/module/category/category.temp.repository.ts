@@ -26,9 +26,9 @@ export class CategoryRepository {
       .createQueryBuilder('user')
       .innerJoinAndSelect('user.activities', 'activity')
       .innerJoin('activity.category', 'category')
-      .select('category.name as category_name, category.topicId as topic_id')
-      .addSelect('COUNT(activity.id)', 'user_activity_count')
-      .groupBy('category_name, topic_id')
+      .select('category.name as category_name, category.topicName as topicName')
+      .addSelect('COUNT(activity)', 'user_activity_count')
+      .groupBy('category_name, topicName')
       .getSql();
   }
 
@@ -37,16 +37,16 @@ export class CategoryRepository {
       .createQueryBuilder('activity')
       .innerJoin('activity.category', 'category')
       .select(
-        'category.name as category_name, category.topicId as topic_id, COUNT(activity.id) as activity_count',
+        'category.name as category_name, category.topicName as topicName, COUNT(activity.name) as activity_count',
       )
-      .groupBy('category_name, topic_id')
+      .groupBy('category_name, topicName')
       .getSql();
   }
 
   getTopicsQuery() {
     return this.topicRepository
       .createQueryBuilder()
-      .select('id, name as topic_name, img as topic_img')
+      .select('name as topic_name, img as topic_img')
       .getSql();
   }
 
@@ -54,7 +54,7 @@ export class CategoryRepository {
     return this.entityManager
       .createQueryBuilder()
       .select(
-        'user_activities.topic_id, user_activities.category_name, user_activities.user_activity_count, all_activities.activity_count',
+        'user_activities.topicName, user_activities.category_name, user_activities.user_activity_count, all_activities.activity_count',
       )
       .from('(' + this.getUserActivitiesQuery() + ')', 'user_activities')
       .innerJoin(
@@ -72,7 +72,7 @@ export class CategoryRepository {
       .innerJoin(
         '(' + this.getTopicsQuery() + ')',
         'topic',
-        'categories.topic_id = topic.id',
+        'categories.topicName = topic.name',
       )
       .getRawMany();
   }

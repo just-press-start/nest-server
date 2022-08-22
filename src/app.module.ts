@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ActivityModule } from './module/activity/activity.module';
 import { AchievementModule } from './module/achievement/achievement.module';
+import { TopicModule } from './module/topic/topic.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AchievementModule } from './module/achievement/achievement.module';
     CategoryModule,
     ActivityModule,
     AchievementModule,
+    TopicModule,
   ],
 })
 export class AppModule {}

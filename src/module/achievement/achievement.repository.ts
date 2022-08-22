@@ -19,7 +19,7 @@ export class AchievementRepository {
       .where('achievement.activityName = :activityName', {
         activityName,
       })
-      .getRawMany();
+      .getRawOne();
   }
 
   getUserAchievements(userId: string) {
@@ -29,7 +29,7 @@ export class AchievementRepository {
         'achievement.name as name, achievement.img as img, activity.name as activity_name',
       )
       .innerJoin('achievement.activity', 'activity')
-      .leftJoinAndSelect(
+      .leftJoin(
         'activity.users',
         'user',
         'user.deviceId = :userId or user.deviceId is null',

@@ -6,6 +6,7 @@ import { User } from '../../entities/User';
 import { Activity } from '../../entities/Activity';
 import { Topic } from '../../entities/Topic';
 import { CategoryMapper } from './category.mapper';
+import { query } from 'express';
 
 @Injectable()
 export class CategoryRepository {
@@ -23,16 +24,17 @@ export class CategoryRepository {
     private readonly categoryMapper: CategoryMapper,
   ) {}
 
-  getUserActivitiesQuery() {
+  getUserActivitiesQuery(deviceId) {
     return this.userRepository
       .createQueryBuilder('user')
       .innerJoinAndSelect('user.activities', 'activity')
       .innerJoin('activity.category', 'category')
       .select(
-        'category.name as category_name, category.img as category_img, category.topicId as topic_id',
+        'category.name as category_name, category.img as category_img, category.topicName as topicName',
       )
-      .addSelect('COUNT(activity.id)', 'user_activity_count')
-      .groupBy('category_name, topic_id')
+      .addSelect('COUNT(activity.name)', 'user_activity_count')
+      .where(`user.deviceId='${deviceId}'`)
+      .groupBy('category_name, topicName')
       .getSql();
   }
 
@@ -41,26 +43,29 @@ export class CategoryRepository {
       .createQueryBuilder('activity')
       .innerJoin('activity.category', 'category')
       .select(
-        'category.name as category_name, category.topicId as topic_id, COUNT(activity.id) as activity_count',
+        'category.name as category_name, category.topicName as topicName, COUNT(activity.name) as activity_count',
       )
-      .groupBy('category_name, topic_id')
+      .groupBy('category_name, topicName')
       .getSql();
   }
 
   getTopicsQuery() {
     return this.topicRepository
       .createQueryBuilder()
-      .select('id, name as topic_name, img as topic_img')
+      .select('name, img')
       .getSql();
   }
 
-  getCategoriesWithProgress() {
+  getCategoriesWithProgress(deviceId) {
     return this.entityManager
       .createQueryBuilder()
       .select(
-        'user_activities.topic_id, user_activities.category_name, user_activities.category_img, user_activities.user_activity_count, all_activities.activity_count',
+        'user_activities.topicName, user_activities.category_name, user_activities.category_img, user_activities.user_activity_count, all_activities.activity_count',
       )
-      .from('(' + this.getUserActivitiesQuery() + ')', 'user_activities')
+      .from(
+        '(' + this.getUserActivitiesQuery(deviceId) + ')',
+        'user_activities',
+      )
       .innerJoin(
         '(' + this.getActivitiesQuery() + ')',
         'all_activities',
@@ -69,19 +74,20 @@ export class CategoryRepository {
       .getSql();
   }
 
-  async getCategoriesWithProgressWithTopics() {
+  async getCategoriesWithProgressWithTopics(deviceId: string) {
     const queryResult = await this.entityManager
       .createQueryBuilder()
       .select(
-        'topic_name, topic_img, category_name, category_img, activity_count, user_activity_count',
+        'topic.name, topic.img, category_name, category_img, activity_count, user_activity_count',
       )
-      .from('(' + this.getCategoriesWithProgress() + ')', 'categories')
+      .from('(' + this.getCategoriesWithProgress(deviceId) + ')', 'categories')
       .innerJoin(
         '(' + this.getTopicsQuery() + ')',
         'topic',
-        'categories.topic_id = topic.id',
+        'categories.topicName = topic.name',
       )
       .getRawMany();
+    console.log(queryResult);
     const result = this.categoryMapper.mapper(queryResult);
     return result;
   }
@@ -98,11 +104,18 @@ export class CategoryRepository {
   }
 
   async getMostPopularCategories() {
-    return await this.categoryRepository
+    return this.categoryRepository
       .createQueryBuilder('category')
       .orderBy('category.click', 'DESC')
       .limit(10)
       .getMany();
+  }
+
+  getCategory(categoryName: string) {
+    return this.categoryRepository
+      .createQueryBuilder('category')
+      .where('category.name=:categoryName', { categoryName })
+      .getOne();
   }
 
   //TEMP

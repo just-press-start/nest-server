@@ -8,11 +8,17 @@ import { CategoryRepository } from './category.repository';
 export class CategoryService {
   constructor(private readonly categoryRepository: CategoryRepository) {}
 
-  getCategoriesWithProgressWithTopics(): any {
-    return this.categoryRepository.getCategoriesWithProgressWithTopics();
+  getCategoriesWithProgressWithTopics(deviceId: string): any {
+    return this.categoryRepository.getCategoriesWithProgressWithTopics(
+      deviceId,
+    );
   }
 
   getMostPopularCategories() {
     return this.categoryRepository.getMostPopularCategories();
+  }
+
+  getCategory(categoryName: string) {
+    return this.categoryRepository.getCategory(categoryName);
   }
 }
