@@ -1,12 +1,18 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { ActivityService } from './activity.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { GetAchievementsDto } from '../achievement/models/dto/GetAchievementsDto';
+import { GetActivitiesDto } from './models/dto/GetActivitiesDto';
 
 @ApiTags('activity')
 @Controller('activity')
 export class ActivityController {
   constructor(private readonly activityService: ActivityService) {}
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [GetActivitiesDto],
+  })
   @ApiOperation({ summary: 'Data for if activity revealed or not' })
   @Get('/:categoryName/user/:userId')
   getActivitiesByCategoryName(
