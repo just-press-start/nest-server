@@ -5,7 +5,12 @@ import { CategoryService } from './category.service';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @Get()
-  async getCategory() {
-    return this.categoryService.findAll();
+  async getCategories() {
+    return this.categoryService.getCategoriesWithProgressWithTopics();
+  }
+
+  @Get('/popular')
+  async getMostPopularCategories() {
+    return this.categoryService.getMostPopularCategories();
   }
 }

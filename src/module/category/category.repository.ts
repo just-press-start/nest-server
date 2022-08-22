@@ -97,6 +97,14 @@ export class CategoryRepository {
       .execute();
   }
 
+  async getMostPopularCategories() {
+    return await this.categoryRepository
+      .createQueryBuilder('category')
+      .orderBy('category.click', 'DESC')
+      .limit(10)
+      .getMany();
+  }
+
   //TEMP
 
   // i can't use
