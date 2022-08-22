@@ -18,5 +18,6 @@ import { CategoryMapper } from './category.mapper';
   ],
   controllers: [CategoryController],
   providers: [CategoryService, CategoryRepository, CategoryMapper],
+  exports: [CategoryRepository],
 })
 export class CategoryModule {}

@@ -85,6 +85,18 @@ export class CategoryRepository {
     const result = this.categoryMapper.mapper(queryResult);
     return result;
   }
+
+  async increaseClickCount(categoryName: string) {
+    return await this.categoryRepository
+      .createQueryBuilder()
+      .update('Category')
+      .set({
+        click: () => 'click + 1',
+      })
+      .where('name=:categoryName', { categoryName })
+      .execute();
+  }
+
   //TEMP
 
   // i can't use
