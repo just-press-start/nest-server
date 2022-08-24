@@ -20,7 +20,9 @@ export class Achievement {
   @Column({ length: 40 })
   img: string;
 
-  @OneToOne(() => Activity, (activity) => activity.achievement)
+  @OneToOne(() => Activity, (activity) => activity.achievement, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   activity: Activity;
 }

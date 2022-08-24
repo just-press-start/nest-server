@@ -118,6 +118,10 @@ export class CategoryRepository {
       .getOne();
   }
 
+  delete(categoryName: string) {
+    return this.categoryRepository.delete(categoryName);
+  }
+
   //TEMP
 
   // i can't use

@@ -13,7 +13,7 @@ export class ActivityRepository {
     private entityManager: EntityManager,
   ) {}
 
-  getActivitiesByCategoryName(categoryName: string, userId: string) {
+  getRevealedActivitiesByCategoryName(categoryName: string, userId: string) {
     return this.activityRepository
       .createQueryBuilder('activity')
       .select('activity.name, activity.img, user.device_id')
@@ -30,6 +30,13 @@ export class ActivityRepository {
       .getRawMany();
   }
 
+  getActivitiesByCategoryName(categoryName: string) {
+    return this.activityRepository
+      .createQueryBuilder('activity')
+      .where('activity.categoryName = :categoryName', { categoryName })
+      .getMany();
+  }
+
   revealActivity(activityName, userId) {
     return this.entityManager
       .createQueryBuilder()
@@ -44,5 +51,9 @@ export class ActivityRepository {
       .select('activity.categoryName')
       .limit(1)
       .getRawMany();
+  }
+
+  delete(activityName) {
+    this.activityRepository.delete(activityName);
   }
 }

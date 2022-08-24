@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Delete, Get, HttpStatus, Param } from '@nestjs/common';
 import { AchievementService } from './achievement.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetAchievementsDto } from './models/dto/GetAchievementsDto';
@@ -28,5 +28,10 @@ export class AchievementController {
     @Param('userId') userId: string,
   ): Promise<GetAchievementsDto[]> {
     return this.achievementService.getAchievements(userId);
+  }
+
+  @Delete('/:achievementName')
+  delete(@Param('achievementName') achievementName: string) {
+    this.achievementService.delete(achievementName);
   }
 }

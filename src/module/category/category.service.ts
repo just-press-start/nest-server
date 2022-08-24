@@ -21,4 +21,8 @@ export class CategoryService {
   getCategory(categoryName: string) {
     return this.categoryRepository.getCategory(categoryName);
   }
+
+  delete(categoryName: string) {
+    return this.categoryRepository.delete(categoryName);
+  }
 }

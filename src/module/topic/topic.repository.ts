@@ -30,4 +30,15 @@ export class TopicRepository {
       .where('topic.name=:topicName', { topicName })
       .getOne();
   }
+
+  create(request) {
+    const topic = new Topic();
+    topic.name = request.name;
+    topic.img = request.img;
+    return this.topicRepository.save(topic);
+  }
+
+  delete(topicName) {
+    return this.topicRepository.delete(topicName);
+  }
 }

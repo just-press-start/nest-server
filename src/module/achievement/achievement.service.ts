@@ -14,4 +14,8 @@ export class AchievementService {
   getAchievements(userId: string) {
     return this.achievementRepository.getUserAchievements(userId);
   }
+
+  delete(achievementName: string) {
+    return this.achievementRepository.delete(achievementName);
+  }
 }

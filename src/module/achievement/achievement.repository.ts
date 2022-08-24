@@ -39,4 +39,8 @@ export class AchievementRepository {
       )
       .getRawMany();
   }
+
+  delete(achievementName: string) {
+    return this.achievementRepository.delete(achievementName);
+  }
 }

@@ -16,6 +16,8 @@ export class Category {
   @OneToMany(() => Activity, (activity) => activity.category)
   activity: Activity;
 
-  @ManyToOne(() => Topic, (topic) => topic)
+  @ManyToOne(() => Topic, (topic) => topic, {
+    onDelete: 'CASCADE',
+  })
   topic: Topic;
 }

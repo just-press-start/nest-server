@@ -1,4 +1,11 @@
-import { Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ActivityService } from './activity.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetAchievementsDto } from '../achievement/models/dto/GetAchievementsDto';
@@ -19,10 +26,16 @@ export class ActivityController {
     @Param('categoryName') categoryName: string,
     @Param('userId') userId: string,
   ) {
-    return this.activityService.getActivitiesByCategoryName(
+    return this.activityService.getRevealedActivitiesByCategoryName(
       categoryName,
       userId,
     );
+  }
+
+  @ApiOperation({ summary: 'Get category activities' })
+  @Get('/:categoryName')
+  getActivitiesOfCategory(@Param('categoryName') categoryName: string) {
+    return this.activityService.getActivitiesByCategoryName(categoryName);
   }
 
   @ApiOperation({ summary: 'Triggered when activity is revealed' })
@@ -32,5 +45,10 @@ export class ActivityController {
     @Param('userId') userId: string,
   ) {
     return this.activityService.revealActivity(activityName, userId);
+  }
+
+  @Delete('/:activityName')
+  delete(@Param('activityName') activityName: string) {
+    this.activityService.delete(activityName);
   }
 }

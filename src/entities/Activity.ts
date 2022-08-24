@@ -18,7 +18,9 @@ export class Activity {
   @PrimaryColumn({ length: 40 })
   name: string;
 
-  @ManyToOne(() => Category, (category) => category)
+  @ManyToOne(() => Category, (category) => category, {
+    onDelete: 'CASCADE',
+  })
   category: Category;
 
   @ManyToMany(() => User, (user) => user.activities)

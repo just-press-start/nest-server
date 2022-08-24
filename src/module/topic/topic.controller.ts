@@ -1,8 +1,17 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { TopicService } from './topic.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetCategoryDto } from '../category/models/dto/GetCategoryDto';
 import { GetTopicDto } from './models/dto/GetTopicDto';
+import { CreateTopicRequest } from './models/request/CreateTopicRequest';
 
 @ApiTags('topics')
 @Controller('topics')
@@ -40,5 +49,15 @@ export class TopicController {
   @Get('/:topicName')
   getTopicByName(@Param('topicName') topicName: string) {
     return this.topicService.getTopicByName(topicName);
+  }
+
+  @Post()
+  create(@Body() request: CreateTopicRequest) {
+    return this.topicService.create(request);
+  }
+
+  @Delete('/:topicName')
+  delete(@Param('topicName') topicName: string) {
+    return this.topicService.delete(topicName);
   }
 }

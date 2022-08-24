@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Delete, Get, HttpStatus, Param } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetPopularCategoriesDto } from './models/dto/GetPopularCategoriesDto';
@@ -45,5 +45,10 @@ export class CategoryController {
   @Get('/:categoryName')
   async getCategory(@Param('categoryName') categoryName: string) {
     return this.categoryService.getCategory(categoryName);
+  }
+
+  @Delete('/:categoryName')
+  delete(@Param('categoryName') categoryName: string) {
+    return this.categoryService.delete(categoryName);
   }
 }

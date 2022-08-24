@@ -9,11 +9,15 @@ export class ActivityService {
     private readonly categoryRepository: CategoryRepository,
   ) {}
 
-  getActivitiesByCategoryName(categoryName: string, userId: string) {
-    return this.activityRepository.getActivitiesByCategoryName(
+  getRevealedActivitiesByCategoryName(categoryName: string, userId: string) {
+    return this.activityRepository.getRevealedActivitiesByCategoryName(
       categoryName,
       userId,
     );
+  }
+
+  getActivitiesByCategoryName(categoryName: string) {
+    return this.activityRepository.getActivitiesByCategoryName(categoryName);
   }
 
   async revealActivity(activityName, userId) {
@@ -28,5 +32,9 @@ export class ActivityService {
       categoryNameQuery[0].categoryName,
     );
     return result;
+  }
+
+  delete(activityName) {
+    return this.activityRepository.delete(activityName);
   }
 }

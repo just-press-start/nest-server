@@ -16,4 +16,12 @@ export class TopicService {
   getTopicByName(topicName) {
     return this.topicRepository.getTopicByName(topicName);
   }
+
+  create(request) {
+    return this.topicRepository.create(request);
+  }
+
+  delete(topicName) {
+    return this.topicRepository.delete(topicName);
+  }
 }
