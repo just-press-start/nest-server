@@ -1,17 +1,28 @@
-# Base image
+# select your base image to start with
 FROM node:12.20.0-alpine
 
 # Create app directory
+# this is the location where you will be inside the container
+RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Bundle app source
-COPY . .
-ENV NODE_ENV=dev
 # Install app dependencies
-RUN yarn install
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+# copying packages first helps take advantage of docker layers
+COPY package*.json ./
+COPY . .
 
-# Creates a "dist" folder with the production build
-RUN yarn run build
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
 
-# Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+# Bundle app source
+
+# Make this port accessible from outside the container
+# Necessary for your browser to send HTTP requests to your Node app
+EXPOSE 8080
+
+# Command to run when the container is ready
+# Separate arguments as separate values in the array
+CMD [ "npm", "run", "start:dev"]
