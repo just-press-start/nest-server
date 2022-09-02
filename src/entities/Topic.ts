@@ -15,7 +15,4 @@ export class Topic {
 
   @OneToMany(() => Category, (category) => category.topic)
   category: Category;
-
-  @Column({ length: 40 })
-  img: string;
 }

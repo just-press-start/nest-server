@@ -34,7 +34,6 @@ export class TopicRepository {
   create(request) {
     const topic = new Topic();
     topic.name = request.name;
-    topic.img = request.img;
     return this.topicRepository.save(topic);
   }
 
