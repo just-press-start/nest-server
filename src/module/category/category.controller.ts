@@ -1,9 +1,27 @@
-import { Controller, Delete, Get, HttpStatus, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetPopularCategoriesDto } from './models/dto/GetPopularCategoriesDto';
 import { GetDeviceCategoriesDto } from './models/dto/GetDeviceCategoriesDto';
 import { GetCategoryDto } from './models/dto/GetCategoryDto';
+import { CreateCategoryDto } from './models/dto/CreateCategoryDto';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from '../../config/multer';
 
 @ApiTags('categories')
 @Controller('categories')
@@ -45,6 +63,20 @@ export class CategoryController {
   @Get('/:categoryName')
   async getCategory(@Param('categoryName') categoryName: string) {
     return this.categoryService.getCategory(categoryName);
+  }
+
+  @ApiOperation({
+    summary: 'creates category',
+  })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FilesInterceptor('img', null, multerOptions))
+  @Post('/:topicName')
+  async createCategory(
+    @Param('topicName') topicName: string,
+    @Body() body: CreateCategoryDto,
+    @UploadedFiles() img,
+  ) {
+    return this.categoryService.createCategory(topicName, body, img);
   }
 
   @Delete('/:categoryName')

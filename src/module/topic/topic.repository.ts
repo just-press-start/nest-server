@@ -18,7 +18,7 @@ export class TopicRepository {
   async getCategoriesOfTopic(topicName: string) {
     const topicWithCategory = await this.topicRepository
       .createQueryBuilder('topic')
-      .innerJoinAndSelect('topic.category', 'category')
+      .leftJoinAndSelect('topic.category', 'category')
       .where('topic.name=:topicName', { topicName })
       .getOne();
     return topicWithCategory.category;

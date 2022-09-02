@@ -10,7 +10,7 @@ export class Category {
   @Column({ name: 'click', default: 0 })
   click: number;
 
-  @Column({ length: 40 })
+  @Column({ length: 50 })
   img: string;
 
   @OneToMany(() => Activity, (activity) => activity.category)

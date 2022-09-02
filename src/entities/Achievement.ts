@@ -17,7 +17,7 @@ export class Achievement {
   @PrimaryColumn({ length: 40 })
   name: string;
 
-  @Column({ length: 40 })
+  @Column({ length: 50 })
   img: string;
 
   @OneToOne(() => Activity, (activity) => activity.achievement, {

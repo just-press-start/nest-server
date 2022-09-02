@@ -118,6 +118,14 @@ export class CategoryRepository {
       .getOne();
   }
 
+  createCategory(topicName, body) {
+    const category = new Category();
+    category.name = body.name;
+    category.img = body.img;
+    category.topic = topicName;
+    return this.categoryRepository.save(category);
+  }
+
   delete(categoryName: string) {
     return this.categoryRepository.delete(categoryName);
   }

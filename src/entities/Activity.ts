@@ -29,6 +29,6 @@ export class Activity {
   @OneToOne(() => Achievement, (achievement) => achievement.activity)
   achievement: Achievement;
 
-  @Column({ length: 40 })
+  @Column({ length: 50 })
   img: string;
 }
