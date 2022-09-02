@@ -3,6 +3,7 @@ import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { Activity } from '../../entities/Activity';
 import { EntityManager, Repository } from 'typeorm';
 import { User } from '../../entities/User';
+import { Category } from '../../entities/Category';
 
 @Injectable()
 export class ActivityRepository {
@@ -35,6 +36,14 @@ export class ActivityRepository {
       .createQueryBuilder('activity')
       .where('activity.categoryName = :categoryName', { categoryName })
       .getMany();
+  }
+
+  createActivity(categoryName, body) {
+    const activity = new Activity();
+    activity.category = categoryName;
+    activity.name = body.name;
+    activity.img = body.img;
+    return this.activityRepository.save(activity);
   }
 
   revealActivity(activityName, userId) {

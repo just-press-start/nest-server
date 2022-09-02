@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ActivityRepository } from './activity.repository';
 import { CategoryRepository } from '../category/category.repository';
+import { getImage } from '../../common/helper';
 
 @Injectable()
 export class ActivityService {
@@ -18,6 +19,11 @@ export class ActivityService {
 
   getActivitiesByCategoryName(categoryName: string) {
     return this.activityRepository.getActivitiesByCategoryName(categoryName);
+  }
+
+  async createActivity(categoryName, body, img) {
+    body.img = getImage(img);
+    return this.activityRepository.createActivity(categoryName, body);
   }
 
   async revealActivity(activityName, userId) {
