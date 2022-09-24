@@ -1,7 +1,18 @@
 # 100-things
 
 ## Description
-Open localhost:PORT for swagger.
+In this realm, world is represented as NxN plots.
+Plots an be ocean or island.
+
+Each world has initial island count and size.
+Islands are generated every specific period, on predefined coordinates. 
+Islands are generated from "island-generator" project.
+
+Islands has plots.
+When user clicks to claimable plot, user claims it.
+Then user can put a descriptive image on it.
+
+Inside plot, user can pick a content type and start to use that plot.
 
 ## Installation
 
