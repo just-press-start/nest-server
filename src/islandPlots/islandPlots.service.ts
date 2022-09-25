@@ -1,40 +1,40 @@
+import { Content } from './../contents/schemas/content.schema';
 import { EditPlotDto } from './models/dtos/editPlotDto';
 import { ClaimPlotDto } from './models/dtos/claimPlotDto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Island } from 'src/islands/schemas/island.schema';
+import { Island, IslandDocument } from 'src/islands/schemas/island.schema';
 import mongoose, { Model } from 'mongoose';
 import { Express } from 'express';
 import Helper from '../helpers/queryHelper';
+import { NotFoundException } from '@nestjs/common';
+import { IslandPlotsRepository } from './islandPlots.repository';
 
 @Injectable()
 export class IslandPlotsService {
   constructor(
     @InjectModel(Island.name)
     private islandModel: Model<Island>,
+    @InjectModel(Content.name)
+    private contentModel: Model<Content>,
+    private readonly islandPlotsRepository: IslandPlotsRepository,
   ) {}
-
   async claimPlot(islandId, plotId, claimPlotDto: ClaimPlotDto) {
     const randomColor: string =
       '#' + Math.floor(Math.random() * 16777215).toString(16);
-    const updateResult = await this.islandModel.updateOne(
-      { _id: islandId },
-      {
-        $set: {
-          'plots.$[i].user_name': claimPlotDto.user_name,
-          'plots.$[i].color': randomColor,
-        },
-      },
-      {
-        arrayFilters: [
-          {
-            'i._id': plotId,
-          },
-        ],
-      },
+    const islandPlotUpdateObj = { ...claimPlotDto, color: randomColor };
+    const claimContentResult = await this.islandPlotsRepository.claimContent(
+      plotId,
+      claimPlotDto.user,
     );
+    const claimIslandPlotResult =
+      await this.islandPlotsRepository.claimIslandPlot(
+        islandId,
+        plotId,
+        islandPlotUpdateObj,
+      );
 
-    if (updateResult.matchedCount == 1) {
+    if (claimContentResult) {
       return await this.islandModel.findOne({ _id: islandId });
     } else {
       return null;
@@ -74,7 +74,7 @@ export class IslandPlotsService {
     if (updateResult.matchedCount == 1) {
       return await this.islandModel.findOne({ _id: islandId });
     } else {
-      return null;
+      throw new NotFoundException();
     }
   }
 

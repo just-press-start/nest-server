@@ -109,12 +109,12 @@ export class WorldsService {
     const islandPlots: Plot[] = await IslandGeneratorAPI.getIslandPlots(
       pictureName,
     );
-    const islandModel: Island = {
-      _id: islandId,
-      name: 'temp',
-      img: pictureName,
-      plots: islandPlots,
-    };
+    const islandModel = new Island();
+    islandModel._id = islandId;
+    islandModel.name = 'temp';
+    islandModel.img = pictureName;
+    islandModel.plots = islandPlots;
+    
     const newIslandDocument = new this.islandModel(islandModel);
     const insertResult = await newIslandDocument.save();
     return insertResult;

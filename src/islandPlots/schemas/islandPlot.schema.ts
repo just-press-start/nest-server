@@ -1,8 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import mongoose, { Document } from 'mongoose';
 
 @Schema()
-export class Plot {
+export class Plot extends Document {
   @Prop()
   i: number;
 
@@ -11,6 +12,12 @@ export class Plot {
 
   @Prop()
   isClaimable: boolean;
+
+  @Prop()
+  user?: string;
+
+  @Prop()
+  color?: string;
 
   @Prop()
   @ApiProperty({

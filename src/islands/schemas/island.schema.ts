@@ -8,11 +8,8 @@ import mongoose, { Document } from 'mongoose';
 
 export type IslandDocument = Island & Document;
 
-@Schema({ _id: false })
-export class Island {
-  @Prop()
-  _id: mongoose.Schema.Types.ObjectId;
-
+@Schema()
+export class Island extends Document {
   @Prop({ required: true })
   @ApiProperty()
   name: string;

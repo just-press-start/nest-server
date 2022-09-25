@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Res,
+  Put,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -22,7 +23,7 @@ import { UserGuard } from '../helpers/guards/user.guard';
 export class IslandPlotsController {
   constructor(private readonly plotsService: IslandPlotsService) {}
 
-  @Post('/:plotId/claim-plot')
+  @Put('/:plotId/claim-plot')
   @ApiParam({
     name: 'plotId',
     required: true,

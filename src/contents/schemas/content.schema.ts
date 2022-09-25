@@ -16,6 +16,9 @@ export class Content {
   name: string;
 
   @Prop()
+  user: string;
+
+  @Prop()
   @ApiProperty()
   type: string;
 
