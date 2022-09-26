@@ -56,10 +56,9 @@ export class IslandPlotsController {
     description: 'island object id',
   })
   @ApiCookieAuth('jwt')
-  @UseGuards(UserGuard)
+  //@UseGuards(UserGuard)
   @UseInterceptors(FilesInterceptor('img', null, multerOptions))
   async editPlot(
-    @Res() response,
     @Param('islandId') islandId,
     @Param('plotId') plotId,
     @UploadedFiles() img,

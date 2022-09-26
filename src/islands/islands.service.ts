@@ -25,8 +25,9 @@ export class IslandsService {
     return this.islandModel.findOne({ _id: insertResult._id }).lean();
   }
 
-  async findAll(): Promise<IslandsGetDto> {
-    return this.islandModel.find().lean();
+  async findAll(): Promise<any> {
+    const result = await this.islandModel.find().lean();
+    return result;
   }
 
   async findById(id): Promise<IslandGetDto> {

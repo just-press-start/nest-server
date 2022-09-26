@@ -12,8 +12,8 @@ export class IslandsController {
 
   //TODO: add return types without Res.
   @Get()
-  async getIslands(): Promise<IslandsGetDto> {
-    return this.islandsService.findAll();
+  async getIslands(): Promise<any> {
+    return await this.islandsService.findAll();
   }
 
   @Get('/:id')

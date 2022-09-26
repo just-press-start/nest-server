@@ -1,3 +1,5 @@
+import { ImagesController } from './images/images.controller';
+import { ImagesService } from './images/images.service';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -16,7 +18,7 @@ import { BlogController } from './blog/blog.controller';
     MongooseModule.forRoot(process.env.DATABASE_URI),
     MongooseModule.forFeature([{ name: Content.name, schema: ContentSchema }]),
   ],
-  controllers: [ContentsController, BlogController],
-  providers: [ContentsService, BlogService],
+  controllers: [ContentsController, BlogController, ImagesController],
+  providers: [ContentsService, BlogService, ImagesService],
 })
 export class ContentsModule {}

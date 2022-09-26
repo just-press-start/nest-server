@@ -33,13 +33,7 @@ export class ImagesController {
     @UploadedFiles() img,
     @Body()
     addPhotoDto: AddPhotoDto,
-    @Res() response: Response,
   ) {
-    const updatedContent = await this.imagesService.addPhoto(
-      plotId,
-      addPhotoDto,
-      img,
-    );
-    return response.status(HttpStatus.CREATED).json(updatedContent);
+    return this.imagesService.addPhoto(plotId, addPhotoDto, img);
   }
 }
